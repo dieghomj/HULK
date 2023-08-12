@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/d/Diegho/Projects/HULK/HULK/HULK.csproj",
+      "projectUniqueName": "/home/d/Diegho/Projects/HULK/HULK.csproj",
       "projectName": "HULK",
-      "projectPath": "/home/d/Diegho/Projects/HULK/HULK/HULK.csproj",
+      "projectPath": "/home/d/Diegho/Projects/HULK/HULK.csproj",
       "packagesPath": "/home/d/.nuget/packages/",
-      "outputPath": "/home/d/Diegho/Projects/HULK/HULK/obj/",
+      "outputPath": "/home/d/Diegho/Projects/HULK/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/d/.nuget/NuGet/NuGet.Config"
