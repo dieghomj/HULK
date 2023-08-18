@@ -2,60 +2,6 @@ using System;
 
 namespace HULK{
 
-    public abstract class SyntaxNode
-    {
-
-        public abstract SyntaxKind Kind { get; }
-
-        public abstract IEnumerable<SyntaxNode> GetChildren();
-
-    }
-
-    public abstract class ExpressionSyntax: SyntaxNode
-    {
-
-    }
-
-    sealed class NumberExpressionSyntax : ExpressionSyntax
-    {
-        public NumberExpressionSyntax( SyntaxToken numberToken)
-        {
-            NumberToken = numberToken;
-        }
-
-        public override SyntaxKind Kind => SyntaxKind.NumberExpression;
-
-        public SyntaxToken NumberToken { get; }
-
-        public override IEnumerable<SyntaxNode> GetChildren()
-        {
-            yield return  NumberToken;
-        }
-    }
-
-    sealed class BinaryExpressionSyntax : ExpressionSyntax
-    {
-        public BinaryExpressionSyntax(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
-        {
-            Left = left;
-            OperatorToken = operatorToken;
-            Right = right;
-        }
-
-        public override SyntaxKind Kind => SyntaxKind.BinaryExpression;
-
-        public ExpressionSyntax Left { get; }
-        public SyntaxToken OperatorToken { get; }
-        public ExpressionSyntax Right { get; }
-
-        public override IEnumerable<SyntaxNode> GetChildren()
-        {
-            yield return Left;
-            yield return OperatorToken;
-            yield return Right;
-        }
-    }
-
     public class Parser
     {
         // 1 + 2 * 3
@@ -68,6 +14,7 @@ namespace HULK{
 
         private int _position;
         private SyntaxToken[] _tokens;
+        private List<string> _diagnostics = new List<string>();
 
         public Parser(string text){
 
@@ -91,7 +38,10 @@ namespace HULK{
             while( token.Kind != SyntaxKind.EndOfFileToken);
 
             _tokens = tokens.ToArray();
+            _diagnostics.AddRange(lexer.Diagnostics);
         } 
+
+        public IEnumerable<string> Diagnostics => _diagnostics;
 
         private SyntaxToken Peek(int offset)
         {
@@ -113,6 +63,7 @@ namespace HULK{
         {
             if(Current.Kind == kind)return NextToken();
             
+            _diagnostics.Add($"ERROR: Unexpected token <{Current.Kind}> expected <{kind}>");
             return new SyntaxToken(kind, Current.Position, null, null);
         }
 

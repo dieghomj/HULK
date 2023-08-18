@@ -2,54 +2,21 @@ using System;
 
 namespace HULK
 {
-    public enum SyntaxKind
-    {
-        NumberToken,
-        WitheSpaceToken,
-        PlusToken,
-        MinusToken,
-        StarToken,
-        DivToken,
-        OpenParenthisisToken,
-        CloseParenthisisToken,
-        BadToken,
-        EndOfFileToken,
-        NumberExpression,
-        BinaryExpression
-    }
-
-    public class SyntaxToken : SyntaxNode
-    {
-        public SyntaxToken(SyntaxKind kind, int position, string text, object value)
-        {
-            Kind = kind;
-            Position = position;
-            Text = text;
-            Value = value;
-        }
-
-        public override SyntaxKind Kind { get; }
-
-        public int Position { get; }
-        public string Text { get; }
-        public object Value { get; }
-
-        public override IEnumerable<SyntaxNode> GetChildren()
-        {
-            return Enumerable.Empty<SyntaxNode>();
-        }
-    }
+    
 
     public class Lexer
     {
         private readonly string _text;
         private int _position;
+        private List<string> _diagnostics = new List<string>();
 
 
         public Lexer(string line)
         {
             this._text = line;
-        }
+        } 
+
+        public IEnumerable<string> Diagnostics => _diagnostics;
 
         private char Current
         {
@@ -121,6 +88,7 @@ namespace HULK
             else if (Current == ')')
                 return new SyntaxToken(SyntaxKind.CloseParenthisisToken, _position++, ")", null);
 
+            _diagnostics.Add($"ERROR: bad character input: '{Current}'");
             return new SyntaxToken(SyntaxKind.BadToken, _position++, _text.Substring(_position - 1, 1), null);
 
         }
