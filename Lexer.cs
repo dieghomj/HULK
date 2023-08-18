@@ -1,6 +1,5 @@
 using System;
 
-
 namespace HULK
 {
     public enum SyntaxKind
@@ -19,7 +18,7 @@ namespace HULK
         BinaryExpression
     }
 
-    public class SyntaxToken
+    public class SyntaxToken : SyntaxNode
     {
         public SyntaxToken(SyntaxKind kind, int position, string text, object value)
         {
@@ -29,10 +28,16 @@ namespace HULK
             Value = value;
         }
 
-        public SyntaxKind Kind { get; }
+        public override SyntaxKind Kind { get; }
+
         public int Position { get; }
         public string Text { get; }
         public object Value { get; }
+
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            return Enumerable.Empty<SyntaxNode>();
+        }
     }
 
     public class Lexer
@@ -68,7 +73,8 @@ namespace HULK
             //<numbers>
             //<*-+/>
             //<whitespaces>
-
+            //TODO : implement next tokens: <if - else keywords> <methods/functions> <let - in keywords> < math basic functions> <name variables>
+        
             if (_position >= _text.Length)
             {
                 return new SyntaxToken(SyntaxKind.EndOfFileToken, _position, "\0", null);

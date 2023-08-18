@@ -2,14 +2,16 @@ using System;
 
 namespace HULK{
 
-    abstract class SyntaxNode
+    public abstract class SyntaxNode
     {
 
         public abstract SyntaxKind Kind { get; }
 
+        public abstract IEnumerable<SyntaxNode> GetChildren();
+
     }
 
-    abstract class ExpressionSyntax: SyntaxNode
+    public abstract class ExpressionSyntax: SyntaxNode
     {
 
     }
@@ -18,26 +20,40 @@ namespace HULK{
     {
         public NumberExpressionSyntax( SyntaxToken numberToken)
         {
-
+            NumberToken = numberToken;
         }
 
         public override SyntaxKind Kind => SyntaxKind.NumberExpression;
+
+        public SyntaxToken NumberToken { get; }
+
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            yield return  NumberToken;
+        }
     }
 
     sealed class BinaryExpressionSyntax : ExpressionSyntax
     {
-        public BinaryExpressionSyntax(ExpressionSyntax left, SyntaxNode operatorToken, ExpressionSyntax rigth)
+        public BinaryExpressionSyntax(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
         {
             Left = left;
             OperatorToken = operatorToken;
-            Rigth = rigth;
+            Right = right;
         }
 
         public override SyntaxKind Kind => SyntaxKind.BinaryExpression;
 
         public ExpressionSyntax Left { get; }
-        public SyntaxNode OperatorToken { get; }
-        public ExpressionSyntax Rigth { get; }
+        public SyntaxToken OperatorToken { get; }
+        public ExpressionSyntax Right { get; }
+
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            yield return Left;
+            yield return OperatorToken;
+            yield return Right;
+        }
     }
 
     public class Parser
@@ -87,7 +103,40 @@ namespace HULK{
 
         private SyntaxToken Current => Peek(0);
 
+        private SyntaxToken NextToken(){
+            var current = Current;
+            _position++;
+            return current;
+        }
 
+        private SyntaxToken Match(SyntaxKind kind)
+        {
+            if(Current.Kind == kind)return NextToken();
+            
+            return new SyntaxToken(kind, Current.Position, null, null);
+        }
+
+        public ExpressionSyntax Parse()
+        {
+            var left  = ParsePrimaryExpression();
+
+            while(  Current.Kind == SyntaxKind.PlusToken ||
+                    Current.Kind == SyntaxKind.MinusToken)
+            {
+                var operatorToken = NextToken();
+                var right = ParsePrimaryExpression();
+                left = new BinaryExpressionSyntax(left, operatorToken, right);
+
+            }
+            
+            return left;
+        }
+
+        private ExpressionSyntax ParsePrimaryExpression()
+        {
+            var numberToken = Match(SyntaxKind.NumberToken);
+            return new NumberExpressionSyntax(numberToken);
+        }
     }
 }
 
