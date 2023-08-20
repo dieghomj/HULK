@@ -10,19 +10,25 @@
                 if(string.IsNullOrWhiteSpace(line))return;
 
                 var parser = new Parser(line);
-                var expression = parser.Parse();
+                var syntaxTree = parser.Parse();
 
                 var color = Console.ForegroundColor;
                 Console.ForegroundColor = ConsoleColor.DarkGray;
 
-                TreePrint(expression);
+                TreePrint(syntaxTree.Root);
                 Console.ForegroundColor = color;
 
-                if(parser.Diagnostics.Any())
+                if (!parser.Diagnostics.Any())
+                {
+                    var e = new Evaluator(syntaxTree.Root);
+                    var result = e.Evaluate();
+                    Console.WriteLine(result);
+                }
+                else
                 {
                     Console.ForegroundColor = ConsoleColor.DarkRed;
 
-                    foreach(var diagnostic in parser.Diagnostics)
+                    foreach (var diagnostic in syntaxTree.Diagnostics)
                         Console.WriteLine(diagnostic);
 
                     Console.ForegroundColor = color;

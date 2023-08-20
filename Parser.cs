@@ -67,11 +67,18 @@ namespace HULK{
             return new SyntaxToken(kind, Current.Position, null, null);
         }
 
-        public ExpressionSyntax Parse()
+        public SyntaxTree Parse()
         {
-            var left  = ParsePrimaryExpression();
+            var expression =  ParseExpression();
+            var endOfFileToken = Match(SyntaxKind.EndOfFileToken);
+            return new SyntaxTree(_diagnostics, expression, endOfFileToken);
+        }
 
-            while(  Current.Kind == SyntaxKind.PlusToken ||
+        private ExpressionSyntax ParseExpression()
+        {
+            var left = ParsePrimaryExpression();
+
+            while (Current.Kind == SyntaxKind.PlusToken ||
                     Current.Kind == SyntaxKind.MinusToken)
             {
                 var operatorToken = NextToken();
@@ -79,7 +86,7 @@ namespace HULK{
                 left = new BinaryExpressionSyntax(left, operatorToken, right);
 
             }
-            
+
             return left;
         }
 
@@ -87,6 +94,48 @@ namespace HULK{
         {
             var numberToken = Match(SyntaxKind.NumberToken);
             return new NumberExpressionSyntax(numberToken);
+        }
+    }
+
+    class Evaluator
+    {
+        private readonly ExpressionSyntax root;
+        public Evaluator(ExpressionSyntax root)
+        {
+            this.root = root;
+        }
+
+        public int Evaluate()
+        {
+            return EvaluateExpression(root);
+        }
+
+        private int EvaluateExpression(ExpressionSyntax node)
+        {
+            //BinaryExpression
+            //NumberExpression
+
+            if(node is NumberExpressionSyntax n)
+            {
+                return (int) n.NumberToken.Value;
+            }
+
+            if(node is BinaryExpressionSyntax b)
+            {
+                var left = EvaluateExpression(b.Left);
+                var right = EvaluateExpression(b.Right);
+                if(b.OperatorToken.Kind == SyntaxKind.PlusToken)
+                    return left + right;
+                else if(b.OperatorToken.Kind == SyntaxKind.MinusToken)
+                    return left - right;
+                else if(b.OperatorToken.Kind == SyntaxKind.StarToken)
+                    return left * right;
+                else if(b.OperatorToken.Kind == SyntaxKind.DivToken)
+                    return left / right;
+                else 
+                    throw new Exception($"Unexpected binary operator <{b.OperatorToken.Kind}>");
+            }
+            else throw new Exception($"Unexpected node {node.Kind}");
         }
     }
 }
