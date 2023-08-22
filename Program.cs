@@ -4,18 +4,40 @@
     {
         public static void Main(string[] args)
         {
-            while(true){
+            bool showTree = false;
+            while (true)
+            {
                 Console.Write(".>");
                 var line = Console.ReadLine();
-                if(string.IsNullOrWhiteSpace(line))return;
+                if (string.IsNullOrWhiteSpace(line)) return;
+
+                if ( line == "#showtree"){
+                    Console.WriteLine("Showing parse trees");
+
+                    
+
+                    continue;
+                }
+
+//===================================================================================
+//                          Parse
+//===================================================================================
 
                 var syntaxTree = SyntaxTree.Parse(line);
+
+//===================================================================================
+//                          Tree Print
+//===================================================================================
 
                 var color = Console.ForegroundColor;
                 Console.ForegroundColor = ConsoleColor.DarkGray;
 
                 TreePrint(syntaxTree.Root);
                 Console.ForegroundColor = color;
+
+//===================================================================================
+//                       ERROR PRINTING
+//===================================================================================
 
                 if (!syntaxTree.Diagnostics.Any())
                 {
@@ -32,7 +54,8 @@
 
                     Console.ForegroundColor = color;
                 }
-
+                //===================================================================================
+                //===================================================================================
             }
         }
 
@@ -40,7 +63,7 @@
         {
             Console.Write(indent);
             Console.Write(node.Kind);
-            if(node is SyntaxToken t && t.Value != null)
+            if (node is SyntaxToken t && t.Value != null)
             {
                 Console.Write(" ");
                 Console.Write(t.Value);
@@ -50,7 +73,7 @@
 
             indent += "    ";
 
-            foreach(var child in node.GetChildren())
+            foreach (var child in node.GetChildren())
                 TreePrint(child, indent);
         }
 

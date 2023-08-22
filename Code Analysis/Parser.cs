@@ -114,9 +114,28 @@ namespace HULK{
         {
 
             if(Current.Kind == SyntaxKind.MinusToken){
+                
+                var zero = new SyntaxToken(SyntaxKind.NumberToken, -1, "0", 0);
+                var left = new NumberExpressionSyntax(zero);
                 var operatorToken = NextToken();
-                var expression = ParseExpression();
-                return new NegativeNumberExpressionSyntax(operatorToken,expression);
+                var right = ParsePrimaryExpression();
+
+                return new BinaryExpressionSyntax(left,operatorToken, right);                
+
+                // if(Current.Kind == SyntaxKind.OpenParenthisisToken){
+                //     var expression = ParseExpression();
+                //     return new NegativeNumberExpressionSyntax(operatorToken,expression);
+                // }
+                // else if(Current.Kind == SyntaxKind.NumberToken){
+                //     var expression = new NumberExpressionSyntax(Match(SyntaxKind.NumberToken));
+                //     return new NegativeNumberExpressionSyntax(operatorToken,expression);
+                // }
+                // else if(Current.Kind == SyntaxKind.PlusToken || Current.Kind == SyntaxKind.MinusToken){
+                //     var expression = ParsePrimaryExpression();
+                //     return new NegativeNumberExpressionSyntax(operatorToken,expression);
+                // }
+                // else Match(SyntaxKind.OpenParenthisisToken);
+
             }
 
             if(Current.Kind == SyntaxKind.OpenParenthisisToken){
@@ -154,10 +173,10 @@ namespace HULK{
                 return (int) n.NumberToken.Value;
             }
 
-            if(node is NegativeNumberExpressionSyntax nn)
-            {
-                return - EvaluateExpression(nn.Expression);
-            }
+            // if(node is NegativeNumberExpressionSyntax nn)
+            // {
+            //     return - EvaluateExpression(nn.Expression);
+            // }
 
             if(node is BinaryExpressionSyntax b)
             {
