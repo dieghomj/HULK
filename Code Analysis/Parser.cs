@@ -112,6 +112,13 @@ namespace HULK{
 
         private ExpressionSyntax ParsePrimaryExpression()
         {
+
+            if(Current.Kind == SyntaxKind.MinusToken){
+                var operatorToken = NextToken();
+                var expression = ParseExpression();
+                return new NegativeNumberExpressionSyntax(operatorToken,expression);
+            }
+
             if(Current.Kind == SyntaxKind.OpenParenthisisToken){
                 var left = NextToken();
                 var expression = ParseExpression();
@@ -145,6 +152,11 @@ namespace HULK{
             if(node is NumberExpressionSyntax n)
             {
                 return (int) n.NumberToken.Value;
+            }
+
+            if(node is NegativeNumberExpressionSyntax nn)
+            {
+                return - EvaluateExpression(nn.Expression);
             }
 
             if(node is BinaryExpressionSyntax b)
