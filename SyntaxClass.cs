@@ -13,7 +13,8 @@ namespace HULK
         BadToken,
         EndOfFileToken,
         NumberExpression,
-        BinaryExpression
+        BinaryExpression,
+        ParenthisizedExpression
     }
 
     public abstract class SyntaxNode
@@ -42,6 +43,12 @@ namespace HULK
         public IReadOnlyList<string> Diagnostics { get; }
         public ExpressionSyntax Root { get; }
         public SyntaxToken EndOfFileToken { get; }
+
+        public static SyntaxTree Parse(string text){
+            var parser = new Parser(text);
+            return parser.Parse();
+        }
+
     }
 
     sealed class NumberExpressionSyntax : ExpressionSyntax
@@ -84,6 +91,28 @@ namespace HULK
         }
     }
 
+    sealed class ParenthisizedExpressionSyntax : ExpressionSyntax
+    {
+        public ParenthisizedExpressionSyntax( SyntaxToken openParenthisisToken, ExpressionSyntax expression, SyntaxToken closedParenthisisToken)
+        {
+            OpenParenthisisToken = openParenthisisToken;
+            Expression = expression;
+            ClosedParenthisisToken = closedParenthisisToken;
+        }
+
+        public override SyntaxKind Kind => SyntaxKind.ParenthisizedExpression;
+
+        public SyntaxToken OpenParenthisisToken { get; }
+        public ExpressionSyntax Expression { get; }
+        public SyntaxToken ClosedParenthisisToken { get; }
+
+        public override IEnumerable<SyntaxNode> GetChildren()
+        {
+            yield return OpenParenthisisToken;
+            yield return Expression;
+            yield return ClosedParenthisisToken;
+        }
+    }
 
     public class SyntaxToken : SyntaxNode
     {

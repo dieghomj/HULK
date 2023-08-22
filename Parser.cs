@@ -69,17 +69,37 @@ namespace HULK{
 
         public SyntaxTree Parse()
         {
-            var expression =  ParseExpression();
+            var expression =  ParseTerm();
             var endOfFileToken = Match(SyntaxKind.EndOfFileToken);
             return new SyntaxTree(_diagnostics, expression, endOfFileToken);
         }
 
-        private ExpressionSyntax ParseExpression()
+        private ExpressionSyntax ParseExpression(){
+            return ParseTerm();
+        }
+
+        private ExpressionSyntax ParseTerm()
         {
-            var left = ParsePrimaryExpression();
+            var left = ParseFactor();
 
             while (Current.Kind == SyntaxKind.PlusToken ||
                     Current.Kind == SyntaxKind.MinusToken)
+            {
+                var operatorToken = NextToken();
+                var right = ParseFactor();
+                left = new BinaryExpressionSyntax(left, operatorToken, right);
+
+            }
+
+            return left;
+        }
+
+        private ExpressionSyntax ParseFactor()
+        {
+            var left = ParsePrimaryExpression();
+
+            while (Current.Kind == SyntaxKind.StarToken ||
+                    Current.Kind == SyntaxKind.DivToken)
             {
                 var operatorToken = NextToken();
                 var right = ParsePrimaryExpression();
@@ -92,6 +112,13 @@ namespace HULK{
 
         private ExpressionSyntax ParsePrimaryExpression()
         {
+            if(Current.Kind == SyntaxKind.OpenParenthisisToken){
+                var left = NextToken();
+                var expression = ParseExpression();
+                var right = Match(SyntaxKind.CloseParenthisisToken);
+                return new ParenthisizedExpressionSyntax(left,expression,right);
+            }
+
             var numberToken = Match(SyntaxKind.NumberToken);
             return new NumberExpressionSyntax(numberToken);
         }
@@ -135,6 +162,10 @@ namespace HULK{
                 else 
                     throw new Exception($"Unexpected binary operator <{b.OperatorToken.Kind}>");
             }
+
+            if (node is ParenthisizedExpressionSyntax p )
+                return EvaluateExpression(p.Expression);
+
             else throw new Exception($"Unexpected node {node.Kind}");
         }
     }

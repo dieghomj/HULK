@@ -9,8 +9,7 @@
                 var line = Console.ReadLine();
                 if(string.IsNullOrWhiteSpace(line))return;
 
-                var parser = new Parser(line);
-                var syntaxTree = parser.Parse();
+                var syntaxTree = SyntaxTree.Parse(line);
 
                 var color = Console.ForegroundColor;
                 Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -18,7 +17,7 @@
                 TreePrint(syntaxTree.Root);
                 Console.ForegroundColor = color;
 
-                if (!parser.Diagnostics.Any())
+                if (!syntaxTree.Diagnostics.Any())
                 {
                     var e = new Evaluator(syntaxTree.Root);
                     var result = e.Evaluate();
