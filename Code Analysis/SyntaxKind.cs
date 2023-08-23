@@ -14,9 +14,9 @@ namespace HULK
         DivToken,
         OpenParenthisisToken,
         CloseParenthisisToken,
-        
+
         //Expressions
-        NumberExpression,
+        LiteralExpression,
         BinaryExpression,
         ParenthisizedExpression,
         NegativeNumberExpression
