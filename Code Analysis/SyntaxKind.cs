@@ -2,10 +2,9 @@ namespace HULK
 {
     public enum SyntaxKind
     {
-        //SpecialTokens
+        //Tokens
         BadToken,
         EndOfFileToken,
-
         WitheSpaceToken,
         NumberToken,
         PlusToken,
