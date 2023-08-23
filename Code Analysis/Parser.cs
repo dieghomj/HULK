@@ -28,7 +28,7 @@ namespace HULK
             
             do
             {
-                token = lexer.NextToken();
+                token = lexer.Lex();
 
                 if( token.Kind != SyntaxKind.WitheSpaceToken &&
                     token.Kind != SyntaxKind.BadToken)

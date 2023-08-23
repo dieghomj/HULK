@@ -32,7 +32,7 @@ namespace HULK
             _position++;
         }
 
-        public SyntaxToken NextToken()
+        public SyntaxToken Lex()
         {
             //This method tokenizes the give string
             //At the moment reads:
@@ -75,18 +75,21 @@ namespace HULK
 
             }
 
-            if (Current == '+')
-                return new SyntaxToken(SyntaxKind.PlusToken, _position++, "+", null);
-            else if (Current == '-')
-                return new SyntaxToken(SyntaxKind.MinusToken, _position++, "-", null);
-            else if (Current == '*')
-                return new SyntaxToken(SyntaxKind.StarToken, _position++, "*", null);
-            else if (Current == '/')
-                return new SyntaxToken(SyntaxKind.DivToken, _position++, "/", null);
-            else if (Current == '(')
-                return new SyntaxToken(SyntaxKind.OpenParenthisisToken, _position++, "(", null);
-            else if (Current == ')')
-                return new SyntaxToken(SyntaxKind.CloseParenthisisToken, _position++, ")", null);
+            switch (Current)
+            {
+                case '+':
+                    return new SyntaxToken(SyntaxKind.PlusToken, _position++, "+", null);
+                case '-':
+                    return new SyntaxToken(SyntaxKind.MinusToken, _position++, "-", null);
+                case '*':
+                    return new SyntaxToken(SyntaxKind.StarToken, _position++, "*", null);
+                case '/':
+                    return new SyntaxToken(SyntaxKind.DivToken, _position++, "/", null);
+                case '(':
+                    return new SyntaxToken(SyntaxKind.OpenParenthisisToken, _position++, "(", null);
+                case ')':
+                    return new SyntaxToken(SyntaxKind.CloseParenthisisToken, _position++, ")", null);
+            }
 
             _diagnostics.Add($"ERROR: bad character input: '{Current}'");
             return new SyntaxToken(SyntaxKind.BadToken, _position++, _text.Substring(_position - 1, 1), null);
