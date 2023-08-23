@@ -1,4 +1,4 @@
-namespace HULK
+namespace HULK.CodeAnalysis.Syntax
 {
     internal static class SyntaxFacts
     {

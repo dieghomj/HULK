@@ -1,4 +1,4 @@
-namespace HULK
+namespace HULK.CodeAnalysis
 {
     public class Evaluator
     {
@@ -27,14 +27,14 @@ namespace HULK
             {
                 var operand = EvaluateExpression(u.Operand);
 
-                if(u.OperatorToken.Kind == SyntaxKind.MinusToken)
-                {
-                    return -operand;
-                }
-
-                else if(u.OperatorToken.Kind == SyntaxKind.PlusToken)
+                if(u.OperatorToken.Kind == SyntaxKind.PlusToken)
                 {
                     return operand;
+                }
+
+                else if(u.OperatorToken.Kind == SyntaxKind.MinusToken)
+                {
+                    return -operand;
                 } 
                 else 
                     throw new Exception($"Unexpected unary operator <{u.OperatorToken.Kind}>");

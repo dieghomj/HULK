@@ -1,6 +1,6 @@
 using System;
 
-namespace HULK
+namespace HULK.CodeAnalysis.Syntax
 {
 
     internal sealed class Lexer

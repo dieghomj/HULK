@@ -1,4 +1,4 @@
-namespace HULK
+namespace HULK.CodeAnalysis.Syntax
 {
     public sealed class UnaryExpressionSyntax : ExpressionSyntax
     {
@@ -9,14 +9,11 @@ namespace HULK
         }
 
         public override SyntaxKind Kind => SyntaxKind.UnaryExpression;
-
-        public ExpressionSyntax Left { get; }
         public SyntaxToken OperatorToken { get; }
         public ExpressionSyntax Operand { get; }
 
         public override IEnumerable<SyntaxNode> GetChildren()
         {
-            yield return Left;
             yield return OperatorToken;
             yield return Operand;
         }

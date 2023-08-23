@@ -1,4 +1,7 @@
-﻿namespace HULK
+﻿using HULK.CodeAnalysis;
+using HULK.CodeAnalysis.Syntax;
+
+namespace HULK
 {
     internal static class Program
     {
@@ -15,13 +18,14 @@
                     
                     showTree = !showTree;
                     Console.WriteLine(showTree ? "Showing parse trees." : "Not showing parse trees.");
-
+                    continue;
+                
                 }
+
 
 //===================================================================================
 //                          Parse
 //===================================================================================
-
                 var syntaxTree = SyntaxTree.Parse(line);
                 
 //===================================================================================
