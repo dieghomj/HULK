@@ -16,8 +16,9 @@ namespace HULK
 
         //Expressions
         LiteralExpression,
+        UnaryExpression,
         BinaryExpression,
         ParenthisizedExpression,
-        NegativeNumberExpression
+        NegativeNumberExpression,
     }
 }

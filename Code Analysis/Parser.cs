@@ -80,7 +80,18 @@ namespace HULK
 
         private ExpressionSyntax ParseExpression(int parentPrecedence = 0)
         {
-            var left = ParsePrimaryExpression();
+            ExpressionSyntax left;
+            var unaryOperatorPrecedence = Current.Kind.GetUnaryOperatorPrecedence();
+            if( unaryOperatorPrecedence != 0 && unaryOperatorPrecedence >= parentPrecedence)
+            {
+                var operatorToken = NextToken();
+                var operand = ParseExpression(unaryOperatorPrecedence);
+                left = new UnaryExpressionSyntax(operatorToken, operand);
+            }
+            else
+            {
+                left = ParsePrimaryExpression();
+            }
 
             while(true)
             {
@@ -100,16 +111,16 @@ namespace HULK
         private ExpressionSyntax ParsePrimaryExpression()
         {
 
-            if (Current.Kind == SyntaxKind.MinusToken)
-            {
+            // if (Current.Kind == SyntaxKind.MinusToken)
+            // {
 
-                var zero = new SyntaxToken(SyntaxKind.NumberToken, -1, "0", 0);
-                var left = new LiteralExpressionSyntax(zero);
-                var operatorToken = NextToken();
-                var right = ParsePrimaryExpression();
+            //     var zero = new SyntaxToken(SyntaxKind.NumberToken, -1, "0", 0);
+            //     var left = new LiteralExpressionSyntax(zero);
+            //     var operatorToken = NextToken();
+            //     var right = ParsePrimaryExpression();
 
-                return new BinaryExpressionSyntax(left, operatorToken, right);
-            }
+            //     return new BinaryExpressionSyntax(left, operatorToken, right);
+            // }
 
             if (Current.Kind == SyntaxKind.OpenParenthisisToken)
             {
