@@ -2,16 +2,20 @@ namespace HULK
 {
     public enum SyntaxKind
     {
-        NumberToken,
+        //SpecialTokens
+        BadToken,
+        EndOfFileToken,
+
         WitheSpaceToken,
+        NumberToken,
         PlusToken,
         MinusToken,
         StarToken,
         DivToken,
         OpenParenthisisToken,
         CloseParenthisisToken,
-        BadToken,
-        EndOfFileToken,
+        
+        //Expressions
         NumberExpression,
         BinaryExpression,
         ParenthisizedExpression,

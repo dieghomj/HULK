@@ -1,8 +1,8 @@
 ﻿namespace HULK
 {
-    class Program
+    internal static class Program
     {
-        public static void Main(string[] args)
+        private static void Main()
         {
             bool showTree = false;
             while (true)
@@ -12,11 +12,10 @@
                 if (string.IsNullOrWhiteSpace(line)) return;
 
                 if ( line == "#showtree"){
-                    Console.WriteLine("Showing parse trees");
-
                     
+                    showTree = !showTree;
+                    Console.WriteLine(showTree ? "Showing parse trees." : "Not showing parse trees.");
 
-                    continue;
                 }
 
 //===================================================================================
@@ -24,17 +23,18 @@
 //===================================================================================
 
                 var syntaxTree = SyntaxTree.Parse(line);
-
+                
 //===================================================================================
 //                          Tree Print
 //===================================================================================
-
-                var color = Console.ForegroundColor;
-                Console.ForegroundColor = ConsoleColor.DarkGray;
-
-                TreePrint(syntaxTree.Root);
-                Console.ForegroundColor = color;
-
+                if (showTree){
+            
+                    var color = Console.ForegroundColor;
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    TreePrint(syntaxTree.Root);
+                    Console.ResetColor();
+            
+                }
 //===================================================================================
 //                       ERROR PRINTING
 //===================================================================================
@@ -52,10 +52,10 @@
                     foreach (var diagnostic in syntaxTree.Diagnostics)
                         Console.WriteLine(diagnostic);
 
-                    Console.ForegroundColor = color;
+                    Console.ResetColor();
                 }
-                //===================================================================================
-                //===================================================================================
+//===================================================================================
+//===================================================================================
             }
         }
 

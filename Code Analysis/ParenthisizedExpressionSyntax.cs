@@ -1,6 +1,6 @@
 namespace HULK
 {
-    sealed class ParenthisizedExpressionSyntax : ExpressionSyntax
+    public sealed class ParenthisizedExpressionSyntax : ExpressionSyntax
     {
         public ParenthisizedExpressionSyntax( SyntaxToken openParenthisisToken, ExpressionSyntax expression, SyntaxToken closedParenthisisToken)
         {

@@ -1,8 +1,9 @@
 using System;
 
-namespace HULK{
+namespace HULK
+{
 
-    public class Parser
+    internal sealed class Parser
     {
         // 1 + 2 * 3
 
@@ -69,7 +70,7 @@ namespace HULK{
 
         public SyntaxTree Parse()
         {
-            var expression =  ParseTerm();
+            var expression =  ParseExpression();
             var endOfFileToken = Match(SyntaxKind.EndOfFileToken);
             return new SyntaxTree(_diagnostics, expression, endOfFileToken);
         }
@@ -116,26 +117,11 @@ namespace HULK{
             if(Current.Kind == SyntaxKind.MinusToken){
                 
                 var zero = new SyntaxToken(SyntaxKind.NumberToken, -1, "0", 0);
-                var left = new NumberExpressionSyntax(zero);
+                var left = new LiteralExpressionSyntax(zero);
                 var operatorToken = NextToken();
                 var right = ParsePrimaryExpression();
 
-                return new BinaryExpressionSyntax(left,operatorToken, right);                
-
-                // if(Current.Kind == SyntaxKind.OpenParenthisisToken){
-                //     var expression = ParseExpression();
-                //     return new NegativeNumberExpressionSyntax(operatorToken,expression);
-                // }
-                // else if(Current.Kind == SyntaxKind.NumberToken){
-                //     var expression = new NumberExpressionSyntax(Match(SyntaxKind.NumberToken));
-                //     return new NegativeNumberExpressionSyntax(operatorToken,expression);
-                // }
-                // else if(Current.Kind == SyntaxKind.PlusToken || Current.Kind == SyntaxKind.MinusToken){
-                //     var expression = ParsePrimaryExpression();
-                //     return new NegativeNumberExpressionSyntax(operatorToken,expression);
-                // }
-                // else Match(SyntaxKind.OpenParenthisisToken);
-
+                return new BinaryExpressionSyntax(left,operatorToken, right);
             }
 
             if(Current.Kind == SyntaxKind.OpenParenthisisToken){
@@ -146,58 +132,7 @@ namespace HULK{
             }
 
             var numberToken = Match(SyntaxKind.NumberToken);
-            return new NumberExpressionSyntax(numberToken);
-        }
-    }
-
-    class Evaluator
-    {
-        private readonly ExpressionSyntax root;
-        public Evaluator(ExpressionSyntax root)
-        {
-            this.root = root;
-        }
-
-        public int Evaluate()
-        {
-            return EvaluateExpression(root);
-        }
-
-        private int EvaluateExpression(ExpressionSyntax node)
-        {
-            //BinaryExpression
-            //NumberExpression
-
-            if(node is NumberExpressionSyntax n)
-            {
-                return (int) n.NumberToken.Value;
-            }
-
-            // if(node is NegativeNumberExpressionSyntax nn)
-            // {
-            //     return - EvaluateExpression(nn.Expression);
-            // }
-
-            if(node is BinaryExpressionSyntax b)
-            {
-                var left = EvaluateExpression(b.Left);
-                var right = EvaluateExpression(b.Right);
-                if(b.OperatorToken.Kind == SyntaxKind.PlusToken)
-                    return left + right;
-                else if(b.OperatorToken.Kind == SyntaxKind.MinusToken)
-                    return left - right;
-                else if(b.OperatorToken.Kind == SyntaxKind.StarToken)
-                    return left * right;
-                else if(b.OperatorToken.Kind == SyntaxKind.DivToken)
-                    return left / right;
-                else 
-                    throw new Exception($"Unexpected binary operator <{b.OperatorToken.Kind}>");
-            }
-
-            if (node is ParenthisizedExpressionSyntax p )
-                return EvaluateExpression(p.Expression);
-
-            else throw new Exception($"Unexpected node {node.Kind}");
+            return new LiteralExpressionSyntax(numberToken);
         }
     }
 }
