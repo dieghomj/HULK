@@ -1,4 +1,5 @@
 ﻿using HULK.CodeAnalysis;
+using HULK.CodeAnalysis.Binding;
 using HULK.CodeAnalysis.Syntax;
 
 namespace HULK
@@ -27,6 +28,10 @@ namespace HULK
 //                          Parse
 //===================================================================================
                 var syntaxTree = SyntaxTree.Parse(line);
+                var binder = new Binder();
+                var boundExpression = binder.BindExpression(syntaxTree.Root);
+
+                var diagnostics = syntaxTree.Diagnostics.Concat(binder.Diagnostics).ToArray();
                 
 //===================================================================================
 //                          Tree Print
@@ -45,7 +50,7 @@ namespace HULK
 
                 if (!syntaxTree.Diagnostics.Any())
                 {
-                    var e = new Evaluator(syntaxTree.Root);
+                    var e = new Evaluator(boundExpression);
                     var result = e.Evaluate();
                     Console.WriteLine(result);
                 }

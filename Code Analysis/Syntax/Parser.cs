@@ -111,17 +111,6 @@ namespace HULK.CodeAnalysis.Syntax
         private ExpressionSyntax ParsePrimaryExpression()
         {
 
-            // if (Current.Kind == SyntaxKind.MinusToken)
-            // {
-
-            //     var zero = new SyntaxToken(SyntaxKind.NumberToken, -1, "0", 0);
-            //     var left = new LiteralExpressionSyntax(zero);
-            //     var operatorToken = NextToken();
-            //     var right = ParsePrimaryExpression();
-
-            //     return new BinaryExpressionSyntax(left, operatorToken, right);
-            // }
-
             if (Current.Kind == SyntaxKind.OpenParenthisisToken)
             {
                 var left = NextToken();
