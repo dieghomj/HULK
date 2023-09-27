@@ -8,7 +8,7 @@ namespace HULK.CodeAnalysis.Binding
         }
 
         public override BoundNodeKind Kind => BoundNodeKind.LiteralExpression;
-        public override Type Type =>Value.GetType();
+        public override Type Type => Value.GetType();
         public object Value { get; }
     }
 

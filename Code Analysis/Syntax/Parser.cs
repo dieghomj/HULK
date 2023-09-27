@@ -111,16 +111,29 @@ namespace HULK.CodeAnalysis.Syntax
         private ExpressionSyntax ParsePrimaryExpression()
         {
 
-            if (Current.Kind == SyntaxKind.OpenParenthisisToken)
+            switch (Current.Kind)
             {
-                var left = NextToken();
-                var expression = ParseExpression();
-                var right = Match(SyntaxKind.CloseParenthisisToken);
-                return new ParenthisizedExpressionSyntax(left, expression, right);
-            }
+                case SyntaxKind.OpenParenthisisToken:
+                {
+                    var left = NextToken();
+                    var expression = ParseExpression();
+                    var right = Match(SyntaxKind.CloseParenthisisToken);
+                    return new ParenthisizedExpressionSyntax(left, expression, right);
+                }
 
-            var numberToken = Match(SyntaxKind.NumberToken);
-            return new LiteralExpressionSyntax(numberToken);
+                case SyntaxKind.FalseKeyword:
+                case SyntaxKind.TrueKeyword:
+                {
+                    var keywordToken = NextToken();
+                    var value = keywordToken.Kind == SyntaxKind.TrueKeyword;
+                    return new LiteralExpressionSyntax(keywordToken, value);
+                }
+                default:
+                {
+                    var numberToken = Match(SyntaxKind.NumberToken);
+                    return new LiteralExpressionSyntax(numberToken);
+                }
+            }
         }
     }
 }

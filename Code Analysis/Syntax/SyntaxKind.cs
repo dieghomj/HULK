@@ -11,8 +11,16 @@ namespace HULK.CodeAnalysis.Syntax
         MinusToken,
         StarToken,
         DivToken,
+        BangToken,
+        AmpersandToken,
+        PipeToken,
         OpenParenthisisToken,
         CloseParenthisisToken,
+        IdentifierToken,
+
+        //KeyWords
+        FalseKeyword,
+        TrueKeyword,
 
         //Expressions
         LiteralExpression,
@@ -20,5 +28,6 @@ namespace HULK.CodeAnalysis.Syntax
         BinaryExpression,
         ParenthisizedExpression,
         NegativeNumberExpression,
+
     }
 }

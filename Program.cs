@@ -48,7 +48,7 @@ namespace HULK
 //                       ERROR PRINTING
 //===================================================================================
 
-                if (!syntaxTree.Diagnostics.Any())
+                if (!diagnostics.Any())
                 {
                     var e = new Evaluator(boundExpression);
                     var result = e.Evaluate();
@@ -58,7 +58,7 @@ namespace HULK
                 {
                     Console.ForegroundColor = ConsoleColor.DarkRed;
 
-                    foreach (var diagnostic in syntaxTree.Diagnostics)
+                    foreach (var diagnostic in diagnostics)
                         Console.WriteLine(diagnostic);
 
                     Console.ResetColor();

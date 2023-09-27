@@ -75,6 +75,20 @@ namespace HULK.CodeAnalysis.Syntax
 
             }
 
+            if(char.IsLetter(Current)){
+                var start = _position;
+
+                while(char.IsLetter(Current))
+                    Next();
+                var length = _position - start;
+                var text = _text.Substring(start,length);
+                var kind = SyntaxFacts.GetKeyWordKind(text);
+                return new SyntaxToken(kind, start, text, null);
+            }
+
+            //true
+            //false
+
             switch (Current)
             {
                 case '+':
@@ -89,6 +103,14 @@ namespace HULK.CodeAnalysis.Syntax
                     return new SyntaxToken(SyntaxKind.OpenParenthisisToken, _position++, "(", null);
                 case ')':
                     return new SyntaxToken(SyntaxKind.CloseParenthisisToken, _position++, ")", null);
+                case '!':
+                    return new SyntaxToken(SyntaxKind.BangToken, _position++, "!", null);
+                case '&':
+                    return new SyntaxToken(SyntaxKind.AmpersandToken, _position++, "&", null);
+                case '|':
+                    return new SyntaxToken(SyntaxKind.PipeToken, _position++, "|", null);
+                
+                 
             }
 
             _diagnostics.Add($"ERROR: bad character input: '{Current}'");

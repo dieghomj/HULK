@@ -5,7 +5,9 @@ namespace HULK.CodeAnalysis.Binding
         Addition,
         Substraction,
         Multiplication,
-        Division
+        Division,
+        LogicalAnd,
+        LogicalOr
     }
 
 }
