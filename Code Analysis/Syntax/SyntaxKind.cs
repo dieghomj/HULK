@@ -14,6 +14,8 @@ namespace HULK.CodeAnalysis.Syntax
         BangToken,
         AmpersandToken,
         PipeToken,
+        EqualEqualToken,
+        BangEqualToken,
         OpenParenthisisToken,
         CloseParenthisisToken,
         IdentifierToken,
@@ -27,7 +29,5 @@ namespace HULK.CodeAnalysis.Syntax
         UnaryExpression,
         BinaryExpression,
         ParenthisizedExpression,
-        NegativeNumberExpression,
-
     }
 }

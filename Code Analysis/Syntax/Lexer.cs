@@ -17,14 +17,16 @@ namespace HULK.CodeAnalysis.Syntax
 
         public IEnumerable<string> Diagnostics => _diagnostics;
 
-        private char Current
+        private char Current => Peek(0);
+        
+        private char LookAhead => Peek(1);
+
+        private char Peek(int offset)
         {
-            get
-            {
-                if (_position >= _text.Length)
-                    return '\0';
-                return _text[_position];
-            }
+            var index = _position + offset;
+            if (index >= _text.Length)
+                return '\0';
+            return _text[_position];
         }
 
         private void Next()
@@ -103,14 +105,20 @@ namespace HULK.CodeAnalysis.Syntax
                     return new SyntaxToken(SyntaxKind.OpenParenthisisToken, _position++, "(", null);
                 case ')':
                     return new SyntaxToken(SyntaxKind.CloseParenthisisToken, _position++, ")", null);
-                case '!':
-                    return new SyntaxToken(SyntaxKind.BangToken, _position++, "!", null);
                 case '&':
                     return new SyntaxToken(SyntaxKind.AmpersandToken, _position++, "&", null);
                 case '|':
                     return new SyntaxToken(SyntaxKind.PipeToken, _position++, "|", null);
-                
-                 
+                case '=':
+                    if(LookAhead == '=')
+                        return new SyntaxToken(SyntaxKind.EqualEqualToken, _position+=2, "==", null);
+                    break;
+                case '!':
+                    if(LookAhead == '=')
+                        return new SyntaxToken(SyntaxKind.BangEqualToken, _position+=2, "!=", null);
+                    else
+                        return new SyntaxToken(SyntaxKind.BangToken, _position++, "!", null);
+                    
             }
 
             _diagnostics.Add($"ERROR: bad character input: '{Current}'");

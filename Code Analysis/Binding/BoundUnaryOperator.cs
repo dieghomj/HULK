@@ -13,14 +13,14 @@ namespace HULK.CodeAnalysis.Binding
             SyntaxKind = syntaxKind;
             Kind = kind;
             OperandType = operandType;
-            ResultyType = resultyType;
+            Type = resultyType;
         }
 
 
         public SyntaxKind SyntaxKind { get; }
         public BoundUnaryOperatorKind Kind { get; }
         public Type OperandType { get; }
-        public Type ResultyType { get; }
+        public Type Type { get; }
 
         private static BoundUnaryOperator[] _operators = 
         {

@@ -8,13 +8,17 @@ namespace HULK.CodeAnalysis.Binding
         : this(syntaxKind, kind, type, type, type) 
         {
         }
+        private BoundBinaryOperator(SyntaxKind syntaxKind, BoundBinaryOperatorKind kind, Type type, Type resultyType) 
+        : this(syntaxKind, kind, type, type, resultyType) 
+        {
+        }
         private BoundBinaryOperator(SyntaxKind syntaxKind, BoundBinaryOperatorKind kind, Type leftType, Type rightype, Type resultyType)
         {
             SyntaxKind = syntaxKind;
             Kind = kind;
             LeftType = leftType;
             Rightype = rightype;
-            ResultyType = resultyType;
+            Type = resultyType;
         }
 
 
@@ -22,17 +26,23 @@ namespace HULK.CodeAnalysis.Binding
         public BoundBinaryOperatorKind Kind { get; }
         public Type LeftType { get; }
         public Type Rightype { get; }
-        public Type ResultyType { get; }
+        public Type Type { get; }
 
         private static BoundBinaryOperator[] _operators = 
         {
+            //Int Operators
             new BoundBinaryOperator(SyntaxKind.PlusToken, BoundBinaryOperatorKind.Addition, typeof(int)),
             new BoundBinaryOperator(SyntaxKind.MinusToken, BoundBinaryOperatorKind.Substraction, typeof(int)),
             new BoundBinaryOperator(SyntaxKind.StarToken, BoundBinaryOperatorKind.Multiplication, typeof(int)),
             new BoundBinaryOperator(SyntaxKind.DivToken, BoundBinaryOperatorKind.Division, typeof(int)),
+            new BoundBinaryOperator(SyntaxKind.EqualEqualToken, BoundBinaryOperatorKind.Equals, typeof(int), typeof(bool)),
+            new BoundBinaryOperator(SyntaxKind.BangEqualToken, BoundBinaryOperatorKind.NotEquals, typeof(int), typeof(bool)),
 
-            new BoundBinaryOperator(SyntaxKind.MinusToken, BoundBinaryOperatorKind.LogicalAnd, typeof(bool)),
-            new BoundBinaryOperator(SyntaxKind.MinusToken, BoundBinaryOperatorKind.LogicalOr, typeof(bool)),
+            //Bool Operators
+            new BoundBinaryOperator(SyntaxKind.AmpersandToken, BoundBinaryOperatorKind.LogicalAnd, typeof(bool)),
+            new BoundBinaryOperator(SyntaxKind.PipeToken, BoundBinaryOperatorKind.LogicalOr, typeof(bool)),
+            new BoundBinaryOperator(SyntaxKind.EqualEqualToken, BoundBinaryOperatorKind.Equals, typeof(bool)),
+            new BoundBinaryOperator(SyntaxKind.BangEqualToken, BoundBinaryOperatorKind.NotEquals, typeof(bool)),
 
         };
 
