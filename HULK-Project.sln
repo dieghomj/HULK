@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HULK", "HULK\HULK.csproj", "{8519CE50-8BAA-4579-9D4F-D1242A74E30E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HULK-Intrepreter", "HULK-Intrepreter\HULK-Intrepreter.csproj", "{D27A471F-E7A2-4CAA-8866-99548E1DC401}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HULK-Tests", "HULK-Tests\HULK-Tests.csproj", "{E1A8B1F2-CAD9-4569-AB93-3A3E32389D2D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8519CE50-8BAA-4579-9D4F-D1242A74E30E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8519CE50-8BAA-4579-9D4F-D1242A74E30E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8519CE50-8BAA-4579-9D4F-D1242A74E30E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8519CE50-8BAA-4579-9D4F-D1242A74E30E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D27A471F-E7A2-4CAA-8866-99548E1DC401}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D27A471F-E7A2-4CAA-8866-99548E1DC401}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D27A471F-E7A2-4CAA-8866-99548E1DC401}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D27A471F-E7A2-4CAA-8866-99548E1DC401}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1A8B1F2-CAD9-4569-AB93-3A3E32389D2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1A8B1F2-CAD9-4569-AB93-3A3E32389D2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1A8B1F2-CAD9-4569-AB93-3A3E32389D2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1A8B1F2-CAD9-4569-AB93-3A3E32389D2D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
