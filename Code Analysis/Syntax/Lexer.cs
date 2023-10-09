@@ -112,7 +112,8 @@ namespace HULK.CodeAnalysis.Syntax
                 case '=':
                     if(LookAhead == '=')
                         return new SyntaxToken(SyntaxKind.EqualEqualToken, _position+=2, "==", null);
-                    break;
+                    else
+                        return new SyntaxToken(SyntaxKind.EqualsToken, _position+=1, "=", null);
                 case '!':
                     if(LookAhead == '=')
                         return new SyntaxToken(SyntaxKind.BangEqualToken, _position+=2, "!=", null);

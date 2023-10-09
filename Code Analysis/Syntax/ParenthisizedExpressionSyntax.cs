@@ -1,15 +1,15 @@
 namespace HULK.CodeAnalysis.Syntax
 {
-    public sealed class ParenthisizedExpressionSyntax : ExpressionSyntax
+    public sealed class ParenthesizedExpressionSyntax : ExpressionSyntax
     {
-        public ParenthisizedExpressionSyntax( SyntaxToken openParenthisisToken, ExpressionSyntax expression, SyntaxToken closedParenthisisToken)
+        public ParenthesizedExpressionSyntax( SyntaxToken openParenthisisToken, ExpressionSyntax expression, SyntaxToken closedParenthisisToken)
         {
             OpenParenthisisToken = openParenthisisToken;
             Expression = expression;
             ClosedParenthisisToken = closedParenthisisToken;
         }
 
-        public override SyntaxKind Kind => SyntaxKind.ParenthisizedExpression;
+        public override SyntaxKind Kind => SyntaxKind.ParenthesizedExpression;
 
         public SyntaxToken OpenParenthisisToken { get; }
         public ExpressionSyntax Expression { get; }

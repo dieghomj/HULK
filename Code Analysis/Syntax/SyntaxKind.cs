@@ -26,8 +26,11 @@ namespace HULK.CodeAnalysis.Syntax
 
         //Expressions
         LiteralExpression,
+        NameExpression,
         UnaryExpression,
         BinaryExpression,
-        ParenthisizedExpression,
+        ParenthesizedExpression,
+        AssignmentExpression,
+        EqualsToken,
     }
 }
