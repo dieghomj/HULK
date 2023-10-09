@@ -16,8 +16,8 @@ namespace HULK.CodeAnalysis.Syntax
         PipeToken,
         EqualEqualToken,
         BangEqualToken,
-        OpenParenthisisToken,
-        CloseParenthisisToken,
+        OpenParenthesisToken,
+        CloseParenthesisToken,
         IdentifierToken,
 
         //KeyWords

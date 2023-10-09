@@ -16,7 +16,7 @@ namespace HULK.CodeAnalysis.Syntax
 
         private int _position;
         private SyntaxToken[] _tokens;
-        private List<string> _diagnostics = new List<string>();
+        private DiagnosticBag _diagnostics = new DiagnosticBag();
 
         public Parser(string text)
         {
@@ -44,7 +44,7 @@ namespace HULK.CodeAnalysis.Syntax
             _diagnostics.AddRange(lexer.Diagnostics);
         }
 
-        public IEnumerable<string> Diagnostics => _diagnostics;
+        public DiagnosticBag Diagnostics => _diagnostics;
 
         private SyntaxToken Peek(int offset)
         {
@@ -67,7 +67,7 @@ namespace HULK.CodeAnalysis.Syntax
         {
             if (Current.Kind == kind) return NextToken();
 
-            _diagnostics.Add($"ERROR: Unexpected token <{Current.Kind}> expected <{kind}>");
+            _diagnostics.ReportUnexpectedToken(Current.TextSpan, Current.Kind, kind);
             return new SyntaxToken(kind, Current.Position, null, null);
         }
 
@@ -134,11 +134,11 @@ namespace HULK.CodeAnalysis.Syntax
 
             switch (Current.Kind)
             {
-                case SyntaxKind.OpenParenthisisToken:
+                case SyntaxKind.OpenParenthesisToken:
                 {
                     var left = NextToken();
                     var expression = ParseExpression();
-                    var right = Match(SyntaxKind.CloseParenthisisToken);
+                    var right = Match(SyntaxKind.CloseParenthesisToken);
                     return new ParenthesizedExpressionSyntax(left, expression, right);
                 }
 
