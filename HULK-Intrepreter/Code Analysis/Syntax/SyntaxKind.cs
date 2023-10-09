@@ -6,11 +6,14 @@ namespace HULK.CodeAnalysis.Syntax
         BadToken,
         EndOfFileToken,
         WitheSpaceToken,
+        IdentifierToken,
         NumberToken,
+        StringToken,
         PlusToken,
         MinusToken,
         StarToken,
         DivToken,
+        EqualsToken,
         BangToken,
         AmpersandToken,
         PipeToken,
@@ -18,7 +21,6 @@ namespace HULK.CodeAnalysis.Syntax
         BangEqualToken,
         OpenParenthesisToken,
         CloseParenthesisToken,
-        IdentifierToken,
 
         //KeyWords
         FalseKeyword,
@@ -31,6 +33,6 @@ namespace HULK.CodeAnalysis.Syntax
         BinaryExpression,
         ParenthesizedExpression,
         AssignmentExpression,
-        EqualsToken,
+
     }
 }

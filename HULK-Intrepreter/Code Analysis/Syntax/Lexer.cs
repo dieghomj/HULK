@@ -45,6 +45,7 @@ namespace HULK.CodeAnalysis.Syntax
         
             if (_position >= _text.Length)
             {
+                _diagnostics.ReportExpectedCharacter( new TextSpan(_position,0), ';');
                 return new SyntaxToken(SyntaxKind.EndOfFileToken, _position, "\0", null);
             }
 
@@ -83,6 +84,29 @@ namespace HULK.CodeAnalysis.Syntax
                 var text = _text.Substring(start,length);
                 var kind = SyntaxFacts.GetKeyWordKind(text);
                 return new SyntaxToken(kind, start, text, null);
+            }
+
+            if(Current == '"')
+            {
+                Next();
+                while(Current != '"' )
+                {
+                    if (_position < _text.Length)
+                        Next();
+                    else
+                    {
+                        _diagnostics.ReportExpectedCharacter(new TextSpan(_position, 0), '"');
+                        break;
+                    }
+                }
+                if(Current == '"')
+                    Next();
+                var length = _position - start;
+                var text = _text.Substring(start, length);
+                var value = text.Substring(1,length-2);
+
+                return new SyntaxToken(SyntaxKind.StringToken,start,text,value);
+
             }
 
             //true
@@ -128,6 +152,9 @@ namespace HULK.CodeAnalysis.Syntax
                         _position++;
                         return new SyntaxToken(SyntaxKind.BangToken, start, "!", null);
                     }
+
+                case ';':
+                    return new SyntaxToken(SyntaxKind.EndOfFileToken, _position, "\0", null);
             }
 
             _diagnostics.ReportBadCharacter(_position, Current);

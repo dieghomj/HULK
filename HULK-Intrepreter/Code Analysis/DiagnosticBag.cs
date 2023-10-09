@@ -54,5 +54,11 @@ internal sealed class DiagnosticBag : IEnumerable<Diagnostic>
         var message = $"Variable {name} doesn't exist";
         Report(span,message);
     }
+
+    internal void ReportExpectedCharacter(TextSpan span, char expectedCharacter)
+    {
+        var message = $"Expected {expectedCharacter}";
+        Report(span,message);
+    }
 }
 

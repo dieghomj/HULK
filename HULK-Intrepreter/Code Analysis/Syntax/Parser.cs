@@ -134,6 +134,7 @@ namespace HULK.CodeAnalysis.Syntax
 
             switch (Current.Kind)
             {
+
                 case SyntaxKind.OpenParenthesisToken:
                 {
                     var left = NextToken();
@@ -148,6 +149,12 @@ namespace HULK.CodeAnalysis.Syntax
                     var keywordToken = NextToken();
                     var value = keywordToken.Kind == SyntaxKind.TrueKeyword;
                     return new LiteralExpressionSyntax(keywordToken, value);
+                }
+
+                case SyntaxKind.StringToken:
+                {
+                    var stringToken = NextToken();
+                    return new LiteralExpressionSyntax(stringToken);
                 }
 
                 case SyntaxKind.IdentifierToken:
