@@ -9,7 +9,10 @@ namespace HULK.CodeAnalysis.Binding
         LogicalAnd,
         LogicalOr,
         Equals,
-        NotEquals
+        NotEquals,
+        Remainder,
+        Exponentiation,
+        Concatenation
     }
 
 }

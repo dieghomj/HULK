@@ -122,6 +122,12 @@ namespace HULK.CodeAnalysis.Syntax
                     return new SyntaxToken(SyntaxKind.StarToken, _position++, "*", null);
                 case '/':
                     return new SyntaxToken(SyntaxKind.DivToken, _position++, "/", null);
+                case '%':
+                    return new SyntaxToken(SyntaxKind.PercentToken, _position++, "%", null);
+                case '^':
+                    return new SyntaxToken(SyntaxKind.CircumflexToken, _position++, "^", null);    
+                case '@':
+                    return new SyntaxToken(SyntaxKind.AtToken, _position++, "@", null);    
                 case '(':
                     return new SyntaxToken(SyntaxKind.OpenParenthesisToken, _position++, "(", null);
                 case ')':

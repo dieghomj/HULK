@@ -71,6 +71,12 @@ namespace HULK.CodeAnalysis
                         return (int)left * (int)right;
                     case BoundBinaryOperatorKind.Division:
                         return (int)left / (int)right;
+                    case BoundBinaryOperatorKind.Remainder:
+                        return (int)left % (int)right;
+                    case BoundBinaryOperatorKind.Exponentiation:
+                        return (int)Math.Pow((int)left,(int)right);                                    
+                    case BoundBinaryOperatorKind.Concatenation:
+                        return left.ToString() + right.ToString();
                     case BoundBinaryOperatorKind.LogicalAnd:
                         return (bool)left && (bool)right;
                     case BoundBinaryOperatorKind.LogicalOr:

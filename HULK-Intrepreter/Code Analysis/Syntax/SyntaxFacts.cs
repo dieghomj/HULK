@@ -10,7 +10,7 @@ namespace HULK.CodeAnalysis.Syntax
                 case SyntaxKind.PlusToken:
                 case SyntaxKind.MinusToken:
                 case SyntaxKind.BangToken:
-                    return 6;
+                    return 8;
                   
                 default:
                     return 0;
@@ -20,12 +20,19 @@ namespace HULK.CodeAnalysis.Syntax
         {
             switch(kind)
             {
+                case SyntaxKind.CircumflexToken:
+                    return 7;
+
                 case SyntaxKind.StarToken:
                 case SyntaxKind.DivToken:
-                    return 5;
+                case SyntaxKind.PercentToken:
+                    return 6;
                     
                 case SyntaxKind.PlusToken:
                 case SyntaxKind.MinusToken:
+                    return 5;
+
+                case SyntaxKind.AtToken:
                     return 4;
                 
                 case SyntaxKind.EqualEqualToken:
