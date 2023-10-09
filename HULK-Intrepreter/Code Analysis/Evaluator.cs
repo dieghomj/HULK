@@ -1,5 +1,4 @@
 using HULK.CodeAnalysis.Binding;
-using HULK.CodeAnalysis.Syntax;
 
 namespace HULK.CodeAnalysis
 {
