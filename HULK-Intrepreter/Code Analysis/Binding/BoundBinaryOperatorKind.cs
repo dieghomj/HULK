@@ -3,7 +3,7 @@ namespace HULK.CodeAnalysis.Binding
     internal enum BoundBinaryOperatorKind
     {
         Addition,
-        Substraction,
+        Subtraction,
         Multiplication,
         Division,
         LogicalAnd,

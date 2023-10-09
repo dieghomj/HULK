@@ -48,5 +48,11 @@ internal sealed class DiagnosticBag : IEnumerable<Diagnostic>
         var message = $"Binary operator '{operatorText}' is not defined for types '{leftType}' and '{rightType}'";
         Report(span,message);
     }
+
+    internal void ReportUndefinedName(TextSpan span, string name)
+    {
+        var message = $"Variable {name} doesn't exist";
+        Report(span,message);
+    }
 }
 

@@ -4,7 +4,9 @@ namespace HULK.CodeAnalysis.Binding
     {
         LiteralExpression,
         UnaryExpression,
-        BinaryExpression
+        BinaryExpression,
+        VariableExpression,
+        AssignmentExpression
     }
 
 }
