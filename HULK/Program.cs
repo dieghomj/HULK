@@ -1,4 +1,5 @@
-﻿using HULK.CodeAnalysis;
+﻿using System.ComponentModel.DataAnnotations;
+using HULK.CodeAnalysis;
 using HULK.CodeAnalysis.Binding;
 using HULK.CodeAnalysis.Syntax;
 
@@ -49,7 +50,7 @@ namespace HULK
 //===================================================================================
 //                       ERROR PRINTING
 //===================================================================================
-
+                
                 if (!diagnostics.Any())
                 {
                     Console.WriteLine(result.Value);
