@@ -46,7 +46,7 @@ namespace HULK_Tests.CodeAnalysis.Syntax
         [InlineData("true == true;", true)]
         [InlineData("false == false;", true)]
         [InlineData("!true == false;", true)]
-        [InlineData("!true & true == false;", true)]
+        [InlineData("!true & true == false;", false)]
         [InlineData("false | false;", false)]
         [InlineData("true | false;", true)]
 
