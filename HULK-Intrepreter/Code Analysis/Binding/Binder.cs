@@ -83,11 +83,9 @@ namespace HULK.CodeAnalysis.Binding
         private BoundExpression BindUnaryExpression(UnaryExpressionSyntax syntax)
         {
             var boundOperand = BindExpression(syntax.Operand);
-            Console.WriteLine(boundOperand.Type);
             var boundOperator = BoundUnaryOperator.Bind(syntax.OperatorToken.Kind, boundOperand.Type);
             if (boundOperator == null)
             {
-                Console.WriteLine("null");
                 _diagnostics.ReportUndefinedUnaryOperator(syntax.OperatorToken.TextSpan, syntax.OperatorToken.Text, boundOperand.Type);
                 return boundOperand;
             }
