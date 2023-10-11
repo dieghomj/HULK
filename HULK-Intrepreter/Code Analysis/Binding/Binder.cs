@@ -31,14 +31,22 @@ namespace HULK.CodeAnalysis.Binding
                     return BindUnaryExpression((UnaryExpressionSyntax)syntax);
                 case SyntaxKind.BinaryExpression:
                     return BindBinaryExpression((BinaryExpressionSyntax)syntax);
+                case SyntaxKind.LetInExpression:
+                    return BindLetInExpression((LetInExpressionSyntax)syntax);
 
                     
                 default:
-                    throw new Exception($"Unexcpected syntax {syntax.Kind}");
+                    throw new Exception($"Unexpected syntax {syntax.Kind}");
             }
         }
 
+        private BoundExpression BindLetInExpression(LetInExpressionSyntax syntax)
+        {
+            var boundAssignment = BindExpression(syntax.Assignment);
+            var boundExpression = BindExpression(syntax.Expression);
 
+            return new BoundLetInExpression(boundAssignment, boundExpression);
+        }
 
         private BoundExpression BindParenthesizedExpression(ParenthesizedExpressionSyntax syntax)
         {

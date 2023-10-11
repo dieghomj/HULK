@@ -6,7 +6,8 @@ namespace HULK.CodeAnalysis.Binding
         UnaryExpression,
         BinaryExpression,
         VariableExpression,
-        AssignmentExpression
+        AssignmentExpression,
+        LetInExpression
     }
 
 }

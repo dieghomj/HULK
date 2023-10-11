@@ -6,4 +6,5 @@ namespace HULK.CodeAnalysis.Syntax
 
         public abstract IEnumerable<SyntaxNode> GetChildren();
     }
+
 }

@@ -79,22 +79,16 @@ namespace HULK.CodeAnalysis.Syntax
 
         private ExpressionSyntax ParseExpression()
         {
-            return ParseAssignmentExpression();
+            return ParseBinaryExpression();
         }
 
         private ExpressionSyntax ParseAssignmentExpression()
         {
 
-            if( Peek(0).Kind == SyntaxKind.IdentifierToken && 
-                Peek(1).Kind == SyntaxKind.EqualsToken)
-            {
-                var identifierToken = NextToken();
-                var operatorToken = NextToken();
-                var right = ParseAssignmentExpression();
+                var identifierToken = Match(SyntaxKind.IdentifierToken);
+                var operatorToken = Match(SyntaxKind.EqualsToken);
+                var right = ParseExpression();
                 return new AssignmentExpressionSyntax(identifierToken, operatorToken, right);
-            }
-
-            return ParseBinaryExpression();
 
         }
         
@@ -145,11 +139,23 @@ namespace HULK.CodeAnalysis.Syntax
 
                 case SyntaxKind.IdentifierToken:
                     return ParseNameExpression();
+                case SyntaxKind.LetKeyword:
+                    return ParseLetInExpression();
 
                 default:
                 case SyntaxKind.NumberToken:
                     return ParseNumberLiteral();
                 }
+        }
+
+        private ExpressionSyntax ParseLetInExpression()
+        {
+            var letToken = Match(SyntaxKind.LetKeyword);
+            var assignment = ParseAssignmentExpression();
+            var inToken = Match(SyntaxKind.InKeyword);
+            var expression = ParseExpression();
+
+            return new LetInExpressionSyntax(letToken, assignment, inToken, expression);
         }
 
         private ExpressionSyntax ParseNumberLiteral()

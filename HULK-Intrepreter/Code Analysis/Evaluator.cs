@@ -20,8 +20,8 @@ namespace HULK.CodeAnalysis
 
         private object EvaluateExpression(BoundExpression node)
         {
-            //BinaryExpression
-            //NumberExpression
+            
+            // 1 + (let a = 1 in a) + (let a = 2 in a)
 
             switch (node.Kind)
             {
@@ -35,9 +35,20 @@ namespace HULK.CodeAnalysis
                     return EvaluateUnaryExpression((BoundUnaryExpression)node);
                 case BoundNodeKind.BinaryExpression:
                     return EvaluateBinaryExpression((BoundBinaryExpression)node);
+                case BoundNodeKind.LetInExpression:
+                    return EvaluateLetInExpression((BoundLetInExpression)node);
                 default:
                     throw new Exception($"Unexpected node {node.Kind}");
             }
+        }
+
+        private object EvaluateLetInExpression(BoundLetInExpression node)
+        {
+
+            EvaluateExpression(node.Assignment);
+            var value =  EvaluateExpression(node.Expression);
+            _variables.Clear();
+            return value;
         }
 
         private static object EvaluateLiteralExpression(BoundLiteralExpression n)
@@ -91,7 +102,7 @@ namespace HULK.CodeAnalysis
                 case BoundBinaryOperatorKind.Remainder:
                     return (double)left % (double)right;
                 case BoundBinaryOperatorKind.Exponentiation:
-                    return (double)Math.Pow((double)left, (double)right);
+                    return Math.Pow((double)left, (double)right);
                 case BoundBinaryOperatorKind.Concatenation:
                     return left.ToString() + right.ToString();
                 case BoundBinaryOperatorKind.LogicalAnd:

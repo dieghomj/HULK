@@ -58,6 +58,10 @@ namespace HULK.CodeAnalysis.Syntax
                     return SyntaxKind.TrueKeyword;
                 case "false":
                     return SyntaxKind.FalseKeyword;
+                case "let": 
+                    return SyntaxKind.LetKeyword;
+                case "in":
+                    return SyntaxKind.InKeyword;
                 default:
                     return SyntaxKind.IdentifierToken;
             }

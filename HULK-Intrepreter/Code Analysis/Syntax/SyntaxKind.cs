@@ -28,6 +28,8 @@ namespace HULK.CodeAnalysis.Syntax
         //KeyWords
         FalseKeyword,
         TrueKeyword,
+        InKeyword,
+        LetKeyword,
 
         //Nodes
         CompilationUnit,
@@ -40,5 +42,6 @@ namespace HULK.CodeAnalysis.Syntax
         BinaryExpression,
         ParenthesizedExpression,
         AssignmentExpression,
+        LetInExpression,
     }
 }
