@@ -65,7 +65,7 @@ namespace HULK.CodeAnalysis.Syntax
             if (Current.Kind == kind) return NextToken();
 
             _diagnostics.ReportUnexpectedToken(Current.TextSpan, Current.Kind, kind);
-            return new SyntaxToken(kind, Current.Position, null, null);
+            return new SyntaxToken(kind, Current.Position, Current.Text, null);
         }
 
         public SyntaxTree Parse()
@@ -141,13 +141,13 @@ namespace HULK.CodeAnalysis.Syntax
                 case SyntaxKind.StringToken:
                     return ParseStringLiteral();
 
+                case SyntaxKind.IdentifierToken:
+                    return ParseNameExpression();
+
+                default:
                 case SyntaxKind.NumberToken:
                     return ParseNumberLiteral();
-
-                case SyntaxKind.IdentifierToken:
-                default:
-                    return ParseNameExpression();
-            }
+                }
         }
 
         private ExpressionSyntax ParseNumberLiteral()
