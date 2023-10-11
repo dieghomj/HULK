@@ -18,7 +18,7 @@ namespace HULK_Tests.CodeAnalysis.Syntax
             var op2Text = SyntaxFacts.GetText(op2);
 
             var text = $"a {op1Text} b {op2Text} c";
-            var expression = SyntaxTree.Parse(text).Root;
+            var expression = SyntaxTree.Parse(text).Root.Expression;
 
 
             if (op1Precedence >= op2Precedence)
@@ -87,7 +87,7 @@ namespace HULK_Tests.CodeAnalysis.Syntax
             var binaryText = SyntaxFacts.GetText(binary);
 
             var text = $"{unaryText} a {binaryText} b";
-            var expression = SyntaxTree.Parse(text).Root;
+            var expression = SyntaxTree.Parse(text).Root.Expression;
 
 
             if (unaryPrecedence >= binaryPrecedence)

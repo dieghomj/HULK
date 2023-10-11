@@ -16,10 +16,12 @@ namespace HULK.CodeAnalysis.Syntax
 
         private readonly DiagnosticBag _diagnostics = new DiagnosticBag();
         private int _position;
+        private string _text;
         private SyntaxToken[] _tokens;
 
         public Parser(string text)
         {
+            _text = text;
             var tokens = new List<SyntaxToken>();
 
             var lexer = new Lexer(text);
@@ -68,11 +70,11 @@ namespace HULK.CodeAnalysis.Syntax
             return new SyntaxToken(kind, Current.Position, Current.Text, null);
         }
 
-        public SyntaxTree Parse()
+        public CompilationUnitSyntax ParseCompilationUnit()
         {
             var expression = ParseExpression();
             var endOfFileToken = Match(SyntaxKind.EndOfFileToken);
-            return new SyntaxTree(_diagnostics, expression, endOfFileToken);
+            return new CompilationUnitSyntax(expression, endOfFileToken);
         }
 
         private ExpressionSyntax ParseExpression()
@@ -182,6 +184,7 @@ namespace HULK.CodeAnalysis.Syntax
             var identifierToken = Match(SyntaxKind.IdentifierToken);
             return new NameExpressionSyntax(identifierToken);
         }
+
     }
 }
 

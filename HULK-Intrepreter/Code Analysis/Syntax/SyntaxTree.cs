@@ -2,20 +2,20 @@ namespace HULK.CodeAnalysis.Syntax
 {
     public sealed class SyntaxTree
     {
-        public SyntaxTree( IEnumerable<Diagnostic> diagnostics,ExpressionSyntax root, SyntaxToken endOfFileToken)
+        private SyntaxTree(string text)
         {
-            Diagnostics = diagnostics.ToArray();
+            var parser = new Parser(text);
+            var root = parser.ParseCompilationUnit();
+
+            Diagnostics = parser.Diagnostics.ToArray();
             Root = root;
-            EndOfFileToken = endOfFileToken;
         }
 
         public IReadOnlyList<Diagnostic> Diagnostics { get; }
-        public ExpressionSyntax Root { get; }
-        public SyntaxToken EndOfFileToken { get; }
+        public CompilationUnitSyntax Root { get; }
 
         public static SyntaxTree Parse(string text){
-            var parser = new Parser(text);
-            return parser.Parse();
+            return new SyntaxTree(text);
         }
         public static IEnumerable<SyntaxToken> ParseTokens(string text){
             var lexer = new Lexer(text);

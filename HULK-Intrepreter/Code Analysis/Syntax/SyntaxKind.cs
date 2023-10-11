@@ -29,6 +29,10 @@ namespace HULK.CodeAnalysis.Syntax
         FalseKeyword,
         TrueKeyword,
 
+        //Nodes
+        CompilationUnit,
+
+
         //Expressions
         LiteralExpression,
         NameExpression,
@@ -36,6 +40,5 @@ namespace HULK.CodeAnalysis.Syntax
         BinaryExpression,
         ParenthesizedExpression,
         AssignmentExpression,
-
     }
 }
