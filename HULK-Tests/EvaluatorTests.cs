@@ -12,25 +12,25 @@ namespace HULK_Tests.CodeAnalysis.Syntax
         [Theory]
         //TODO: Add more tests
         
-        [InlineData("1;", 1)]
-        [InlineData("-1;", -1)]
-        [InlineData("+1;", 1)]
+        [InlineData("1;", 1.0)]
+        [InlineData("-1;", -1.0)]
+        [InlineData("+1;", 1.0)]
         
         [InlineData("\"Hello World\";", "Hello World")]
         
-        [InlineData("1 + 2;", 3)]
-        [InlineData("1 * 2;", 2)]
-        [InlineData("8 / 2;", 4)]
-        [InlineData("2 ^ 2;", 4)]
-        [InlineData("8 % 2;", 0)]
-        [InlineData("1 % 2;", 1)]
-        [InlineData("1 - 2;", -1)]
+        [InlineData("1 + 2;", 3.0)]
+        [InlineData("1 * 2;", 2.0)]
+        [InlineData("8 / 2;", 4.0)]
+        [InlineData("2 ^ 2;", 4.0)]
+        [InlineData("8 % 2;", 0.0)]
+        [InlineData("1 % 2;", 1.0)]
+        [InlineData("1 - 2;", -1.0)]
         
         [InlineData("\"Tres\" @ 2;", "Tres2")]
         
-        [InlineData("a = 1;", 1)]
-        [InlineData("(a = 1) + 1;", 2)]
-        [InlineData("(a = 1) * 2;", 2)]
+        [InlineData("a = 1;", 1.0)]
+        [InlineData("(a = 1) + 1;", 2.0)]
+        [InlineData("(a = 1) * 2;", 2.0)]
         [InlineData("a = \"Yes\";", "Yes")]
         [InlineData("a = \"Yes\" @ \"No\" @ 2345 ;", "YesNo2345")]
         

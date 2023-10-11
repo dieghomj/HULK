@@ -31,18 +31,18 @@ namespace HULK.CodeAnalysis.Binding
         private static BoundBinaryOperator[] _operators = 
         {
             //Number Operators
-            new BoundBinaryOperator(SyntaxKind.PlusToken, BoundBinaryOperatorKind.Addition, typeof(int)),
-            new BoundBinaryOperator(SyntaxKind.MinusToken, BoundBinaryOperatorKind.Subtraction, typeof(int)),
-            new BoundBinaryOperator(SyntaxKind.StarToken, BoundBinaryOperatorKind.Multiplication, typeof(int)),
-            new BoundBinaryOperator(SyntaxKind.DivToken, BoundBinaryOperatorKind.Division, typeof(int)),
-            new BoundBinaryOperator(SyntaxKind.PercentToken, BoundBinaryOperatorKind.Remainder, typeof(int)),
-            new BoundBinaryOperator(SyntaxKind.CircumflexToken, BoundBinaryOperatorKind.Exponentiation, typeof(int)),
-            new BoundBinaryOperator(SyntaxKind.EqualEqualToken, BoundBinaryOperatorKind.Equals, typeof(int), typeof(bool)),
-            new BoundBinaryOperator(SyntaxKind.BangEqualToken, BoundBinaryOperatorKind.NotEquals, typeof(int), typeof(bool)),
+            new BoundBinaryOperator(SyntaxKind.PlusToken, BoundBinaryOperatorKind.Addition, typeof(double)),
+            new BoundBinaryOperator(SyntaxKind.MinusToken, BoundBinaryOperatorKind.Subtraction, typeof(double)),
+            new BoundBinaryOperator(SyntaxKind.StarToken, BoundBinaryOperatorKind.Multiplication, typeof(double)),
+            new BoundBinaryOperator(SyntaxKind.DivToken, BoundBinaryOperatorKind.Division, typeof(double)),
+            new BoundBinaryOperator(SyntaxKind.PercentToken, BoundBinaryOperatorKind.Remainder, typeof(double)),
+            new BoundBinaryOperator(SyntaxKind.CircumflexToken, BoundBinaryOperatorKind.Exponentiation, typeof(double)),
+            new BoundBinaryOperator(SyntaxKind.EqualEqualToken, BoundBinaryOperatorKind.Equals, typeof(double), typeof(bool)),
+            new BoundBinaryOperator(SyntaxKind.BangEqualToken, BoundBinaryOperatorKind.NotEquals, typeof(double), typeof(bool)),
 
             //MixedOperators
-            new BoundBinaryOperator(SyntaxKind.AtToken, BoundBinaryOperatorKind.Concatenation, typeof(string), typeof(int), typeof(string)),       
-            new BoundBinaryOperator(SyntaxKind.AtToken, BoundBinaryOperatorKind.Concatenation, typeof(int), typeof(string), typeof(string)),       
+            new BoundBinaryOperator(SyntaxKind.AtToken, BoundBinaryOperatorKind.Concatenation, typeof(string), typeof(double), typeof(string)),       
+            new BoundBinaryOperator(SyntaxKind.AtToken, BoundBinaryOperatorKind.Concatenation, typeof(double), typeof(string), typeof(string)),       
 
             //String Operators
             new BoundBinaryOperator(SyntaxKind.AtToken, BoundBinaryOperatorKind.Concatenation, typeof(string)),       

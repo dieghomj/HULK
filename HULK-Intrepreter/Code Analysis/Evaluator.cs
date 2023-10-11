@@ -64,9 +64,9 @@ namespace HULK.CodeAnalysis
             switch (u.Op.Kind)
             {
                 case BoundUnaryOperatorKind.Identity:
-                    return (int)operand;
+                    return (double)operand;
                 case BoundUnaryOperatorKind.Negation:
-                    return -(int)operand;
+                    return -(double)operand;
                 case BoundUnaryOperatorKind.LogicalNegation:
                     return !(bool)operand;
                 default:
@@ -81,17 +81,17 @@ namespace HULK.CodeAnalysis
             switch (b.Op.Kind)
             {
                 case BoundBinaryOperatorKind.Addition:
-                    return (int)left + (int)right;
+                    return (double)left + (double)right;
                 case BoundBinaryOperatorKind.Subtraction:
-                    return (int)left - (int)right;
+                    return (double)left - (double)right;
                 case BoundBinaryOperatorKind.Multiplication:
-                    return (int)left * (int)right;
+                    return (double)left * (double)right;
                 case BoundBinaryOperatorKind.Division:
-                    return (int)left / (int)right;
+                    return (double)left / (double)right;
                 case BoundBinaryOperatorKind.Remainder:
-                    return (int)left % (int)right;
+                    return (double)left % (double)right;
                 case BoundBinaryOperatorKind.Exponentiation:
-                    return (int)Math.Pow((int)left, (int)right);
+                    return (double)Math.Pow((double)left, (double)right);
                 case BoundBinaryOperatorKind.Concatenation:
                     return left.ToString() + right.ToString();
                 case BoundBinaryOperatorKind.LogicalAnd:
