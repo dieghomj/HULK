@@ -32,6 +32,7 @@ namespace HULK_Tests.CodeAnalysis.Syntax
         [InlineData("(a = 1) + 1;", 2)]
         [InlineData("(a = 1) * 2;", 2)]
         [InlineData("a = \"Yes\";", "Yes")]
+        [InlineData("a = \"Yes\" @ \"No\" @ 2345 ;", "YesNo2345")]
         
         [InlineData("1 == 1;", true)]
         [InlineData("2 == 1;", false)]
