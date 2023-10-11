@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using HULK.CodeAnalysis.Syntax;
@@ -68,36 +69,23 @@ namespace HULK_Tests.CodeAnalysis.Syntax
 
         private static IEnumerable<(SyntaxKind kind, string text)> GetTokens()
         {
-            return new[]
+            var fixedTokens  = Enum.GetValues(typeof(SyntaxKind))
+                                    .Cast<SyntaxKind>()
+                                    .Select(k => (kind: k, text:SyntaxFacts.GetText(k)))
+                                    .Where(t => t.text != null);
+
+            var dynamicTokens = new[]
             {
-                (SyntaxKind.PlusToken, "+"),
-                (SyntaxKind.MinusToken, "-"),
-                (SyntaxKind.StarToken, "*"),
-                (SyntaxKind.DivToken, "/"),
-                (SyntaxKind.PercentToken, "%"),
-                (SyntaxKind.CircumflexToken, "^"),
-                (SyntaxKind.AtToken, "@"),
-                (SyntaxKind.EqualsToken, "="),
-                (SyntaxKind.BangToken, "!"),
-                (SyntaxKind.AmpersandToken, "&"),
-                (SyntaxKind.PipeToken, "|"),
-                (SyntaxKind.EqualEqualToken, "=="),
-                (SyntaxKind.BangEqualToken, "!="),
-                (SyntaxKind.OpenParenthesisToken, "("),
-                (SyntaxKind.CloseParenthesisToken, ")"),
-
-                (SyntaxKind.FalseKeyword, "false"),
-                (SyntaxKind.TrueKeyword, "true"),
-
-                (SyntaxKind.IdentifierToken, "asd"),
-                (SyntaxKind.IdentifierToken, "a"),
-                (SyntaxKind.IdentifierToken, "abc"),
-
                 (SyntaxKind.NumberToken, "1"),
                 (SyntaxKind.NumberToken, "123"),
                 (SyntaxKind.StringToken, "\"asdasdasd\""),
                 (SyntaxKind.StringToken, "\"Hello world\""),
+                (SyntaxKind.IdentifierToken, "asd"),
+                (SyntaxKind.IdentifierToken, "a"),
+                (SyntaxKind.IdentifierToken, "abc"),
             };
+
+            return dynamicTokens.Concat(fixedTokens);
         }
         private static IEnumerable<(SyntaxKind kind, string text)> GetSeparators()
         {
