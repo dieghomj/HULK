@@ -37,17 +37,29 @@ namespace HULK.CodeAnalysis
                     return EvaluateBinaryExpression((BoundBinaryExpression)node);
                 case BoundNodeKind.LetInExpression:
                     return EvaluateLetInExpression((BoundLetInExpression)node);
+                case BoundNodeKind.IfElseExpression:
+                    return EvaluateIfElseExpression((BoundIfElseExpression)node);
                 default:
                     throw new Exception($"Unexpected node {node.Kind}");
             }
         }
 
+        private object EvaluateIfElseExpression(BoundIfElseExpression node)
+        {
+            var condition = EvaluateExpression(node.Condition);
+            if((bool)condition)
+                return EvaluateExpression(node.TrueExpression);
+            else 
+                return EvaluateExpression(node.FalseExpression);
+        }
+
         private object EvaluateLetInExpression(BoundLetInExpression node)
         {
 
+            var v = (BoundAssignmentExpression)node.Assignment;
             EvaluateExpression(node.Assignment);
             var value =  EvaluateExpression(node.Expression);
-            _variables.Clear();
+            _variables.Remove(v.Variable);
             return value;
         }
 
@@ -89,6 +101,17 @@ namespace HULK.CodeAnalysis
         {
             var left = EvaluateExpression(b.Left);
             var right = EvaluateExpression(b.Right);
+
+            var bind = BoundBinaryOperator.Bind(b.Op.SyntaxKind, left.GetType(), right.GetType());
+            if(bind == null)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine($"! SEMANTIC ERROR: Binary operator '{b.Op.Kind}' is not defined for types '{left.GetType()}' and '{right.GetType()}'");
+                Console.ResetColor();
+                return null;
+            }
+                
+
             switch (b.Op.Kind)
             {
                 case BoundBinaryOperatorKind.Addition:

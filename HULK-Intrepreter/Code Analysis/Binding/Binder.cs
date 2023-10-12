@@ -33,11 +33,25 @@ namespace HULK.CodeAnalysis.Binding
                     return BindBinaryExpression((BinaryExpressionSyntax)syntax);
                 case SyntaxKind.LetInExpression:
                     return BindLetInExpression((LetInExpressionSyntax)syntax);
-
+                case SyntaxKind.IfElseExpression:
+                    return BindIfElseExpression((IfElseExpressionSyntax)syntax);
                     
                 default:
                     throw new Exception($"Unexpected syntax {syntax.Kind}");
             }
+        }
+
+        private BoundExpression BindIfElseExpression(IfElseExpressionSyntax syntax)
+        {
+            
+            var boundCondition = BindExpression(syntax.Condition);
+            if(boundCondition.Type != typeof(bool))
+                _diagnostics.ReportUnexpectedType(syntax.OpenParenthesisToken.TextSpan, syntax.CloseParenthesisToken.TextSpan,boundCondition.Type,typeof(bool));
+            
+            var boundTrueExpression = BindExpression(syntax.TrueExpression);
+            var boundFalseExpression = BindExpression(syntax.FalseExpression);
+
+            return new BoundIfElseExpression( boundCondition, boundTrueExpression, boundFalseExpression);
         }
 
         private BoundExpression BindLetInExpression(LetInExpressionSyntax syntax)
@@ -106,6 +120,9 @@ namespace HULK.CodeAnalysis.Binding
         {
             var boundLeft = BindExpression(syntax.Left);
             var boundRight = BindExpression(syntax.Right);
+
+            // if( boundLeft.Kind == BoundNodeKind.IfElseExpression || boundRight.Kind == BoundNodeKind.IfElseExpression)
+            //     return new BoundBinaryExpression(boundLeft, boundOperator, boundRight);
             var boundOperator = BoundBinaryOperator.Bind(syntax.OperatorToken.Kind, boundLeft.Type, boundRight.Type);
             if (boundOperator == null)
             {

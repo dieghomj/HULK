@@ -17,7 +17,7 @@ namespace HULK.CodeAnalysis.Binding
             SyntaxKind = syntaxKind;
             Kind = kind;
             LeftType = leftType;
-            Rightype = rightype;
+            RightType = rightype;
             Type = resultyType;
         }
 
@@ -25,7 +25,7 @@ namespace HULK.CodeAnalysis.Binding
         public SyntaxKind SyntaxKind { get; }
         public BoundBinaryOperatorKind Kind { get; }
         public Type LeftType { get; }
-        public Type Rightype { get; }
+        public Type RightType { get; }
         public Type Type { get; }
 
         private static BoundBinaryOperator[] _operators = 
@@ -37,8 +37,26 @@ namespace HULK.CodeAnalysis.Binding
             new BoundBinaryOperator(SyntaxKind.DivToken, BoundBinaryOperatorKind.Division, typeof(double)),
             new BoundBinaryOperator(SyntaxKind.PercentToken, BoundBinaryOperatorKind.Remainder, typeof(double)),
             new BoundBinaryOperator(SyntaxKind.CircumflexToken, BoundBinaryOperatorKind.Exponentiation, typeof(double)),
-            new BoundBinaryOperator(SyntaxKind.EqualEqualToken, BoundBinaryOperatorKind.Equals, typeof(double), typeof(bool)),
+            new BoundBinaryOperator(SyntaxKind.EqualEqualToken, BoundBinaryOperatorKind.Equals, typeof(double), typeof(bool)), 
             new BoundBinaryOperator(SyntaxKind.BangEqualToken, BoundBinaryOperatorKind.NotEquals, typeof(double), typeof(bool)),
+
+            // new BoundBinaryOperator(SyntaxKind.PlusToken, BoundBinaryOperatorKind.Addition, typeof(void), typeof(double)),
+            // new BoundBinaryOperator(SyntaxKind.MinusToken, BoundBinaryOperatorKind.Subtraction, typeof(void), typeof(double)),
+            // new BoundBinaryOperator(SyntaxKind.StarToken, BoundBinaryOperatorKind.Multiplication, typeof(void), typeof(double)),
+            // new BoundBinaryOperator(SyntaxKind.DivToken, BoundBinaryOperatorKind.Division, typeof(void), typeof(double)),
+            // new BoundBinaryOperator(SyntaxKind.PercentToken, BoundBinaryOperatorKind.Remainder, typeof(void), typeof(double)),
+            // new BoundBinaryOperator(SyntaxKind.CircumflexToken, BoundBinaryOperatorKind.Exponentiation, typeof(void), typeof(double)),
+            // new BoundBinaryOperator(SyntaxKind.PlusToken, BoundBinaryOperatorKind.Addition, typeof(void), typeof(double), typeof(double)),
+            // new BoundBinaryOperator(SyntaxKind.MinusToken, BoundBinaryOperatorKind.Subtraction, typeof(void), typeof(double), typeof(double)),
+            // new BoundBinaryOperator(SyntaxKind.StarToken, BoundBinaryOperatorKind.Multiplication, typeof(void), typeof(double), typeof(double)),
+            // new BoundBinaryOperator(SyntaxKind.DivToken, BoundBinaryOperatorKind.Division, typeof(void), typeof(double), typeof(double)),
+            // new BoundBinaryOperator(SyntaxKind.PercentToken, BoundBinaryOperatorKind.Remainder, typeof(void), typeof(double), typeof(double)),
+            // new BoundBinaryOperator(SyntaxKind.CircumflexToken, BoundBinaryOperatorKind.Exponentiation, typeof(void), typeof(double), typeof(double)),
+
+            // new BoundBinaryOperator(SyntaxKind.EqualEqualToken, BoundBinaryOperatorKind.Equals, typeof(void), typeof(bool)),
+            // new BoundBinaryOperator(SyntaxKind.BangEqualToken, BoundBinaryOperatorKind.NotEquals, typeof(void), typeof(bool)),
+            // new BoundBinaryOperator(SyntaxKind.EqualEqualToken, BoundBinaryOperatorKind.Equals, typeof(void), typeof(bool)),
+            // new BoundBinaryOperator(SyntaxKind.BangEqualToken, BoundBinaryOperatorKind.NotEquals, typeof(void), typeof(bool)),
 
             //MixedOperators
             new BoundBinaryOperator(SyntaxKind.AtToken, BoundBinaryOperatorKind.Concatenation, typeof(string), typeof(double), typeof(string)),       
@@ -57,14 +75,15 @@ namespace HULK.CodeAnalysis.Binding
 
         };
 
-        public static BoundBinaryOperator Bind(SyntaxKind syntaxKind, Type leftType, Type righType)
+        public static BoundBinaryOperator Bind(SyntaxKind syntaxKind, Type leftType, Type rightType)
         {
             foreach(var op in _operators)
             {
-                if(op.SyntaxKind == syntaxKind && op.LeftType == leftType && op.Rightype == righType) 
+                if(op.SyntaxKind == syntaxKind && (leftType == typeof(void) || rightType == typeof(void)))
+                    return op;
+                if(op.SyntaxKind == syntaxKind && op.LeftType == leftType && op.RightType == rightType) 
                     return op;
             }
-
             return null;
         }
     }

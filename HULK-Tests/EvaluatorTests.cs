@@ -28,11 +28,11 @@ namespace HULK_Tests.CodeAnalysis.Syntax
         
         [InlineData("\"Tres\" @ 2;", "Tres2")]
         
-        [InlineData("a = 1;", 1.0)]
-        [InlineData("(a = 1) + 1;", 2.0)]
-        [InlineData("(a = 1) * 2;", 2.0)]
-        [InlineData("a = \"Yes\";", "Yes")]
-        [InlineData("a = \"Yes\" @ \"No\" @ 2345 ;", "YesNo2345")]
+        [InlineData("let a = 1 in a;", 1.0)]
+        [InlineData("let a = 1 in  a + 1;", 2.0)]
+        [InlineData("let a = 1 in a * 2;", 2.0)]
+        [InlineData("let a = \"Yes\" in a;", "Yes")]
+        [InlineData("let a = \"Yes\" in a @ \"No\" @ 2345 ;", "YesNo2345")]
         
         [InlineData("1 == 1;", true)]
         [InlineData("2 == 1;", false)]
@@ -50,6 +50,17 @@ namespace HULK_Tests.CodeAnalysis.Syntax
         [InlineData("!true & true == false;", false)]
         [InlineData("false | false;", false)]
         [InlineData("true | false;", true)]
+
+        [InlineData("let x = 5 in (let x = 10 in x + x);", 20.0)]
+
+        [InlineData("if(true) 1 else 2;",1.0)]
+        [InlineData("if(false) 1 else 2;",2.0)]
+        [InlineData("if(true == true) 1 else 2;",1.0)]
+        [InlineData("if(true != false) 1 else 2;",1.0)]
+        [InlineData("if(2*2^2 == 2^2*2) 1 else 2;",1.0)]
+        [InlineData("if( (let a = 10 in a * 10)%2 == 0 )  1 else 2;",1.0)]
+        [InlineData("let a = if( (let a = 10 in a * 10)%2 == 0 )  1 else 2 in a * 5;",5.0)]
+
 
         public void SyntaxFactGetTextRoundTrips(string text, object expectedValue)
         {

@@ -141,11 +141,27 @@ namespace HULK.CodeAnalysis.Syntax
                     return ParseNameExpression();
                 case SyntaxKind.LetKeyword:
                     return ParseLetInExpression();
+                case SyntaxKind.IfKeyword:
+                    return ParseIfElseExpression();
 
                 default:
                 case SyntaxKind.NumberToken:
                     return ParseNumberLiteral();
                 }
+        }
+
+        private ExpressionSyntax ParseIfElseExpression()
+        {
+            var ifToken = Match(SyntaxKind.IfKeyword);
+            var openParenthesisToken = Match(SyntaxKind.OpenParenthesisToken);
+            var condition = ParseExpression();
+            var closedParenthesisToken = Match(SyntaxKind.CloseParenthesisToken);
+            var trueExpression = ParseExpression();
+            var elseToken = Match(SyntaxKind.ElseKeyword);
+            var falseExpression = ParseExpression();
+
+            return new IfElseExpressionSyntax(ifToken, openParenthesisToken, condition, closedParenthesisToken, trueExpression, elseToken, falseExpression);
+
         }
 
         private ExpressionSyntax ParseLetInExpression()
