@@ -47,18 +47,20 @@ namespace HULK
                     Console.ResetColor();
             
                 }
-//===================================================================================
-//                       ERROR PRINTING
-//===================================================================================
                 
                 if (!diagnostics.Any())
                 {
+                    Console.ForegroundColor = ConsoleColor.Magenta;
                     Console.WriteLine(result.Value);
+                    Console.ResetColor();
                 }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.DarkRed;
 
+//===================================================================================
+//                       ERROR PRINTING
+//===================================================================================
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
                     foreach (var diagnostic in diagnostics)
                     {
                         Console.WriteLine();
