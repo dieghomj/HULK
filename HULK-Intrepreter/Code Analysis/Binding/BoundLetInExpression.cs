@@ -2,13 +2,13 @@ namespace HULK.CodeAnalysis.Binding
 {
     internal class BoundLetInExpression : BoundExpression
     {
-        public BoundLetInExpression(BoundExpression assignment, BoundExpression expression)
+        public BoundLetInExpression(List<BoundExpression> assignments, BoundExpression expression)
         {
-            Assignment = assignment;
+            Assignments = assignments;
             Expression = expression;
         }
 
-        public BoundExpression Assignment { get; }
+        public List<BoundExpression> Assignments { get; }
         public BoundExpression Expression { get; }
 
         public override Type Type => Expression.Type;

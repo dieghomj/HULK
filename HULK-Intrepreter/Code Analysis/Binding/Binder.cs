@@ -56,10 +56,15 @@ namespace HULK.CodeAnalysis.Binding
 
         private BoundExpression BindLetInExpression(LetInExpressionSyntax syntax)
         {
-            var boundAssignment = BindExpression(syntax.Assignment);
+            var boundAssignments = new List<BoundExpression>();
+
+            foreach (var assignment in syntax.Assignments)
+            {
+                boundAssignments.Add(BindExpression(assignment));
+            }
             var boundExpression = BindExpression(syntax.Expression);
 
-            return new BoundLetInExpression(boundAssignment, boundExpression);
+            return new BoundLetInExpression(boundAssignments, boundExpression);
         }
 
         private BoundExpression BindParenthesizedExpression(ParenthesizedExpressionSyntax syntax)

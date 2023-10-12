@@ -168,6 +168,10 @@ namespace HULK.CodeAnalysis.Syntax
                         _position++;
                         break;
                     }
+                    case ',':
+                        _kind = SyntaxKind.CommaToken;
+                        _position++;
+                        break;
                     case ';':
                     {
                         _kind = SyntaxKind.EndOfFileToken;

@@ -137,8 +137,8 @@ namespace HULK_Tests.CodeAnalysis.Syntax
             if (t1Kind == SyntaxKind.EqualsToken && t2Kind == SyntaxKind.EqualEqualToken)
                 return true;
 
-            //TODO: 
-            //Add more cases
+            /*TODO
+            Add more cases*/
             return false;
 
         }

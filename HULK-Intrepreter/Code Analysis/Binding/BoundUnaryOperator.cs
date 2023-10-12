@@ -34,6 +34,8 @@ namespace HULK.CodeAnalysis.Binding
         {
             foreach(var op in _operators)
             {
+                if(op.SyntaxKind == syntaxKind && operandType == typeof(void))
+                    return op;
                 if(op.SyntaxKind == syntaxKind && op.OperandType == operandType)
                     return op;
             }

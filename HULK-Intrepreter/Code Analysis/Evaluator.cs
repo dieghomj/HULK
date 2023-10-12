@@ -55,11 +55,18 @@ namespace HULK.CodeAnalysis
 
         private object EvaluateLetInExpression(BoundLetInExpression node)
         {
+            
+            foreach (var a in node.Assignments)
+                EvaluateExpression(a);    
 
-            var v = (BoundAssignmentExpression)node.Assignment;
-            EvaluateExpression(node.Assignment);
             var value =  EvaluateExpression(node.Expression);
-            _variables.Remove(v.Variable);
+
+            foreach (var a in node.Assignments)
+            {
+                var v = (BoundAssignmentExpression)a;
+                _variables.Remove(v.Variable);
+            }
+
             return value;
         }
 
@@ -84,6 +91,16 @@ namespace HULK.CodeAnalysis
         {
             var operand = EvaluateExpression(u.Operand);
 
+                //TODO FIX this
+            var bind = BoundUnaryOperator.Bind(u.Op.SyntaxKind, operand.GetType());
+            if(bind == null)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine($"! SEMANTIC ERROR: Unary operator '{u.Op.Kind}' is not defined for type '{operand.GetType()}'");
+                Console.ResetColor();
+                return null;
+            }
+
             switch (u.Op.Kind)
             {
                 case BoundUnaryOperatorKind.Identity:
@@ -102,6 +119,7 @@ namespace HULK.CodeAnalysis
             var left = EvaluateExpression(b.Left);
             var right = EvaluateExpression(b.Right);
 
+                //TODO FIX this
             var bind = BoundBinaryOperator.Bind(b.Op.SyntaxKind, left.GetType(), right.GetType());
             if(bind == null)
             {

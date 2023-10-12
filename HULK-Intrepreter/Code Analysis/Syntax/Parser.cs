@@ -84,12 +84,10 @@ namespace HULK.CodeAnalysis.Syntax
 
         private ExpressionSyntax ParseAssignmentExpression()
         {
-
-                var identifierToken = Match(SyntaxKind.IdentifierToken);
-                var operatorToken = Match(SyntaxKind.EqualsToken);
-                var right = ParseExpression();
-                return new AssignmentExpressionSyntax(identifierToken, operatorToken, right);
-
+            var identifierToken = Match(SyntaxKind.IdentifierToken);
+            var operatorToken = Match(SyntaxKind.EqualsToken);
+            var right = ParseExpression();
+            return new AssignmentExpressionSyntax(identifierToken, operatorToken, right);
         }
         
         private ExpressionSyntax ParseBinaryExpression(int parentPrecedence = 0)
@@ -167,11 +165,29 @@ namespace HULK.CodeAnalysis.Syntax
         private ExpressionSyntax ParseLetInExpression()
         {
             var letToken = Match(SyntaxKind.LetKeyword);
-            var assignment = ParseAssignmentExpression();
+
+            List<ExpressionSyntax> assignments = ParseMultipleAssignments();
+
             var inToken = Match(SyntaxKind.InKeyword);
             var expression = ParseExpression();
 
-            return new LetInExpressionSyntax(letToken, assignment, inToken, expression);
+            return new LetInExpressionSyntax(letToken, assignments.ToList(), inToken, expression);
+        }
+
+        private List<ExpressionSyntax> ParseMultipleAssignments()
+        {
+            var assignments = new List<ExpressionSyntax>();
+            while (Current.Kind != SyntaxKind.InKeyword)
+            {
+                var assignment = ParseAssignmentExpression();
+                assignments.Add(assignment);
+                if (Current.Kind == SyntaxKind.CommaToken)
+                    Match(SyntaxKind.CommaToken);
+                else 
+                    break;
+            }
+
+            return assignments;
         }
 
         private ExpressionSyntax ParseNumberLiteral()

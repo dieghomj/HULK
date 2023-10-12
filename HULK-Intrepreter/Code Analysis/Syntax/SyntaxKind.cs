@@ -24,6 +24,8 @@ namespace HULK.CodeAnalysis.Syntax
         BangEqualToken,
         OpenParenthesisToken,
         CloseParenthesisToken,
+        CommaToken,
+
 
         //KeyWords
         FalseKeyword,
