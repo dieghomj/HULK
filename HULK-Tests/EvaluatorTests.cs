@@ -59,7 +59,7 @@ namespace HULK_Tests.CodeAnalysis.Syntax
         [InlineData("if(true != false) 1 else 2;",1.0)]
         [InlineData("if(2*2^2 == 2^2*2) 1 else 2;",1.0)]
         [InlineData("if( (let a = 10 in a * 10)%2 == 0 )  1 else 2;",1.0)]
-        [InlineData("let a = if( (let a = 10 in a * 10)%2 == 0 )  1 else 2 in a * 5;",5.0)]
+        [InlineData("let a = 1 in (if( (let a = 10 in a * 10)%2 == 0 ) 5 else 2) * a;",50.0)]
 
 
         public void SyntaxFactGetTextRoundTrips(string text, object expectedValue)
