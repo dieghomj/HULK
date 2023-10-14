@@ -79,8 +79,23 @@ namespace HULK.CodeAnalysis.Syntax
 
         private ExpressionSyntax ParseExpression()
         {
-            return ParseBinaryExpression();
+            return ParseFunctionCallExpression();
         }
+
+        private ExpressionSyntax ParseFunctionCallExpression()
+        {
+            if ( Current.Kind == SyntaxKind.IdentifierToken && Peek(1).Kind == SyntaxKind.OpenParenthesisToken)
+            {
+                var functionName = Match(SyntaxKind.IdentifierToken);
+                var openParenthesisToken = Match(SyntaxKind.OpenParenthesisToken);
+                var arguments = ParseArguments();
+                var closedParenthesisToken = Match(SyntaxKind.CloseParenthesisToken);
+
+                return new FunctionCallExpressionSyntax( functionName, openParenthesisToken, arguments, closedParenthesisToken);
+            }
+            else return ParseBinaryExpression();
+        }
+
 
         private ExpressionSyntax ParseAssignmentExpression()
         {
@@ -171,7 +186,7 @@ namespace HULK.CodeAnalysis.Syntax
             var inToken = Match(SyntaxKind.InKeyword);
             var expression = ParseExpression();
 
-            return new LetInExpressionSyntax(letToken, assignments.ToList(), inToken, expression);
+            return new LetInExpressionSyntax(letToken, assignments, inToken, expression);
         }
 
         private List<ExpressionSyntax> ParseMultipleAssignments()
@@ -188,6 +203,21 @@ namespace HULK.CodeAnalysis.Syntax
             }
 
             return assignments;
+        }
+        private List<ExpressionSyntax> ParseArguments()
+        {
+            var arguments = new List<ExpressionSyntax>();
+            while (Current.Kind != SyntaxKind.CloseParenthesisToken)
+            {
+                var argument = ParseExpression();
+                arguments.Add(argument);
+                if (Current.Kind == SyntaxKind.CommaToken)
+                    Match(SyntaxKind.CommaToken);
+                else 
+                    break;
+            }
+
+            return arguments;
         }
 
         private ExpressionSyntax ParseNumberLiteral()

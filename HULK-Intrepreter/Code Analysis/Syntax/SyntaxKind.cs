@@ -48,5 +48,6 @@ namespace HULK.CodeAnalysis.Syntax
         AssignmentExpression,
         LetInExpression,
         IfElseExpression,
+        FunctionCallExpression,
     }
 }
