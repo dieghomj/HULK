@@ -7,12 +7,13 @@ namespace HULK.CodeAnalysis.Binding
 
         private DiagnosticBag _diagnostics = new DiagnosticBag();
         private Dictionary<VariableSymbol, object> _variables;
+        private Dictionary<string, ExpressionSyntax> _functions;
 
-        public Binder(Dictionary<VariableSymbol, object> variables)
+        public Binder(Dictionary<VariableSymbol, object> variables, Dictionary<string, ExpressionSyntax> functions)
         {
             _variables = variables;
+            _functions = functions;
         }
-
         public DiagnosticBag Diagnostics => _diagnostics;
 
         public BoundExpression BindExpression(ExpressionSyntax syntax)
@@ -35,10 +36,28 @@ namespace HULK.CodeAnalysis.Binding
                     return BindLetInExpression((LetInExpressionSyntax)syntax);
                 case SyntaxKind.IfElseExpression:
                     return BindIfElseExpression((IfElseExpressionSyntax)syntax);
+                case SyntaxKind.FunctionCallExpression:
+                    return BindFunctionCallExpression((FunctionCallExpressionSyntax)syntax);
                     
                 default:
                     throw new Exception($"Unexpected syntax {syntax.Kind}");
             }
+        }
+
+        private BoundExpression BindFunctionCallExpression(FunctionCallExpressionSyntax syntax)
+        {
+            var functionName = syntax.FunctionName.Text;
+            var function = _functions.Keys.FirstOrDefault(v => v == functionName);
+            if(function == null)
+            {
+                _diagnostics.ReportUndefinedFunction(syntax.FunctionName.TextSpan,functionName);
+                return new BoundLiteralExpression(0);
+            }
+            var boundArguments = new List<BoundExpression>();
+            foreach (var argument in syntax.Arguments)
+                boundArguments.Add(BindExpression(argument));
+            
+            return new BoundFunctionCallExpression(functionName, boundArguments);
         }
 
         private BoundExpression BindIfElseExpression(IfElseExpressionSyntax syntax)

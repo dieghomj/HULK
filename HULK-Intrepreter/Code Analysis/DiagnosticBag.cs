@@ -67,5 +67,11 @@ internal sealed class DiagnosticBag : IEnumerable<Diagnostic>
         var message = $"! SEMANTIC ERROR: Expected type {expectedType} but got {actualType}";
         Report(new TextSpan(startSpan.Start,endSpan.End-startSpan.Start),message);
     }
+
+    internal void ReportUndefinedFunction(TextSpan span, string functionName)
+    {
+        var message = $"! SEMANTIC ERROR: Function '{functionName}' doesn't exist";
+        Report(span,message);
+    }
 }
 
