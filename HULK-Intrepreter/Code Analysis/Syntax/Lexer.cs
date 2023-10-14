@@ -142,6 +142,32 @@ namespace HULK.CodeAnalysis.Syntax
                         _position++;
                         break;
                     }
+                    case '<':
+                    if (LookAhead == '=')
+                    {
+                        _kind = SyntaxKind.LessEqualToken;
+                        _position+=2;
+                        break;   
+                    }
+                    else
+                    {
+                        _kind = SyntaxKind.LessToken;
+                        _position++;
+                        break;
+                    }
+                    case '>':
+                    if (LookAhead == '=')
+                    {
+                        _kind = SyntaxKind.GreaterEqualToken;
+                        _position+=2;
+                        break;   
+                    }
+                    else
+                    {
+                        _kind = SyntaxKind.GreaterToken;
+                        _position++;
+                        break;
+                    }
                     case '=':
                     if (LookAhead == '=')
                     {
@@ -179,7 +205,6 @@ namespace HULK.CodeAnalysis.Syntax
                     }    
                     default:
                         _diagnostics.ReportBadCharacter(_position, Current);
-                        // _kind = SyntaxKind.BadToken
                         _position++;
                         break;
                 }

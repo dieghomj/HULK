@@ -6,6 +6,7 @@ namespace HULK.CodeAnalysis
     {
         private readonly BoundExpression root;
         private readonly Dictionary<VariableSymbol, object> _variables;
+        private readonly Dictionary<string, BoundFunctionDeclaration> _functions;
 
         public Evaluator(BoundExpression root, Dictionary<VariableSymbol, object> variables)
         {
@@ -38,10 +39,13 @@ namespace HULK.CodeAnalysis
                     return EvaluateWithVariables(node, _variables);
                 case BoundNodeKind.IfElseExpression:
                     return EvaluateIfElseExpression((BoundIfElseExpression)node);
+                case BoundNodeKind.FunctionCallExpression:
+                    return EvaluateFunctionCallExpression((BoundFunctionCallExpression)node);
                 default:
                     throw new Exception($"Unexpected node {node.Kind}");
             }
         }
+
 
         private object EvaluateWithVariables(BoundExpression node, Dictionary<VariableSymbol, object> variables)
         {
@@ -54,8 +58,29 @@ namespace HULK.CodeAnalysis
                 case BoundNodeKind.LetInExpression:
                     return EvaluateLetInExpression((BoundLetInExpression)node, variables);
                 default: 
-                    return null;            
+                    throw new Exception($"Unexpected node {node.Kind}");            
             }
+        }
+        private object EvaluateFunctionCallExpression(BoundFunctionCallExpression node)
+        {
+            var argumentsValue = new List<object>();
+            foreach (var argument in node.Arguments)
+                argumentsValue.Add(EvaluateExpression(argument));
+            return EvaluateFunction(node.FunctionName , argumentsValue);
+        }
+
+        private object EvaluateFunction(string functionName, List<object> argumentsValue)
+        {
+            // var functionExpression = _functions[functionName];
+            // for ( int i = 0; i < functionExpression.Parameters.Count; i++)
+            // {
+            //     var v = functionExpression.Parameters[i];
+            //     _variables[v] = argumentsValue[i]; 
+            // }
+            // return EvaluateExpression(functionExpression.Body);
+        
+            throw new NotImplementedException();
+
         }
 
         private object EvaluateIfElseExpression(BoundIfElseExpression node)
@@ -162,6 +187,14 @@ namespace HULK.CodeAnalysis
                     return Equals(left, right);
                 case BoundBinaryOperatorKind.NotEquals:
                     return !Equals(left, right);
+                case BoundBinaryOperatorKind.Greater:
+                    return (double)left > (double)right;
+                case BoundBinaryOperatorKind.GreaterEqual:
+                    return (double)left >= (double)right;
+                case BoundBinaryOperatorKind.Less:
+                    return (double)left < (double)right;
+                case BoundBinaryOperatorKind.LessEqual:
+                    return (double)left <= (double)right;
                 default:
                     throw new Exception($"Unexpected binary operator <{b.Op.Kind}>");
             }

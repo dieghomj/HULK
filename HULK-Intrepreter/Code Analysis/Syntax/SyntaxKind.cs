@@ -15,6 +15,10 @@ namespace HULK.CodeAnalysis.Syntax
         DivToken,
         PercentToken,
         CircumflexToken,
+        LessEqualToken,
+        LessToken,
+        GreaterToken,
+        GreaterEqualToken,
         AtToken,
         EqualsToken,
         BangToken,
@@ -49,5 +53,6 @@ namespace HULK.CodeAnalysis.Syntax
         LetInExpression,
         IfElseExpression,
         FunctionCallExpression,
+        FunctionKeyword,
     }
 }

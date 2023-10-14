@@ -12,7 +12,11 @@ namespace HULK.CodeAnalysis.Binding
         NotEquals,
         Remainder,
         Exponentiation,
-        Concatenation
+        Concatenation,
+        Greater,
+        Less,
+        GreaterEqual,
+        LessEqual
     }
 
 }

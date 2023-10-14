@@ -37,6 +37,10 @@ namespace HULK.CodeAnalysis.Syntax
 
                 case SyntaxKind.EqualEqualToken:
                 case SyntaxKind.BangEqualToken:
+                case SyntaxKind.GreaterEqualToken:
+                case SyntaxKind.LessEqualToken:
+                case SyntaxKind.LessToken:
+                case SyntaxKind.GreaterToken:
                     return 3;
 
                 case SyntaxKind.AmpersandToken:
@@ -66,6 +70,8 @@ namespace HULK.CodeAnalysis.Syntax
                     return SyntaxKind.IfKeyword;
                 case "else":
                     return SyntaxKind.ElseKeyword;
+                case "function":
+                    return SyntaxKind.FunctionKeyword;
                 default:
                     return SyntaxKind.IdentifierToken;
             }
