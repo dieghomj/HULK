@@ -54,7 +54,7 @@ namespace HULK.CodeAnalysis
                 case BoundNodeKind.LetInExpression:
                     return EvaluateLetInExpression((BoundLetInExpression)node, variables);
                 default: 
-                    return null;            
+                    return EvaluateExpression(node);            
             }
         }
 
