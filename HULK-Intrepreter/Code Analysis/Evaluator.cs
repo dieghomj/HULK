@@ -1,9 +1,13 @@
 using HULK.CodeAnalysis.Binding;
+using HULK.CodeAnalysis.Syntax;
 
 namespace HULK.CodeAnalysis
 {
     internal class Evaluator
-    {
+    {   
+        private const int STACK_OVERFLOW_LIMIT = 1000;
+        private Dictionary<FunctionSymbol, int> _stacks = new Dictionary<FunctionSymbol, int>();
+        private int recursionCount = 0;
         private readonly BoundExpression root;
         private readonly Dictionary<VariableSymbol, object> _variables;
         private readonly Dictionary<FunctionSymbol, object> _functions;
@@ -17,12 +21,17 @@ namespace HULK.CodeAnalysis
 
         public object Evaluate()
         {
+            recursionCount = 0;
             return EvaluateExpression(root);
         }
 
         private object EvaluateExpression(BoundExpression node)
         {
             // 1 + (let a = 1 in a) + (let a = 2 in a)
+
+            recursionCount++;
+            if(recursionCount >= STACK_OVERFLOW_LIMIT)
+                return "Stack Overflow";
 
             switch (node.Kind)
             {
@@ -49,15 +58,6 @@ namespace HULK.CodeAnalysis
             }
         }
 
-        private object EvaluateFunctionDeclarationExpression(BoundFunctionDeclarationExpression node)
-        {
-            foreach (var v in node.Parameters)
-            {
-                _variables.Remove(v);
-            }
-            var text = $"Function {node.FunctionName.Text} correctly declared";
-            return text;
-        }
 
         private object EvaluateWithVariables(BoundExpression node, Dictionary<VariableSymbol, object> variables)
         {
@@ -72,6 +72,11 @@ namespace HULK.CodeAnalysis
                 default: 
                     return EvaluateExpression(node);            
             }
+        }
+        private object EvaluateFunctionDeclarationExpression(BoundFunctionDeclarationExpression node)
+        {
+            var text = $"Function {node.FunctionName.Text} correctly declared";
+            return text;
         }
         private object EvaluateFunctionCallExpression(BoundFunctionCallExpression node)
         {
@@ -97,13 +102,7 @@ namespace HULK.CodeAnalysis
                 variableKeys.Add(v);
             }
 
-            var value = EvaluateExpression((BoundExpression)functionBody);
-
-            foreach (var v in variableKeys)
-                _variables.Remove(v);
-
-            return value;
-        
+            return EvaluateExpression((BoundExpression)functionBody);
         }
 
         private object EvaluateIfElseExpression(BoundIfElseExpression node)
@@ -117,7 +116,7 @@ namespace HULK.CodeAnalysis
 
         private object EvaluateLetInExpression(BoundLetInExpression node, Dictionary<VariableSymbol, object> variables)
         {
-            
+
             foreach (var a in node.Assignments)
                 EvaluateWithVariables(a, variables);    
 
@@ -152,7 +151,7 @@ namespace HULK.CodeAnalysis
             if(bind == null)
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.WriteLine($"! SEMANTIC ERROR: Unary operator '{u.Op.Kind}' is not defined for type '{operand.GetType()}'");
+                Console.WriteLine($"! SEMANTIC ERROR: Unary operator '{SyntaxFacts.GetText(u.Op.SyntaxKind)}' is not defined for type '{operand.GetType()}'");
                 Console.ResetColor();
                 return null;
             }
@@ -180,7 +179,7 @@ namespace HULK.CodeAnalysis
             if(bind == null)
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.WriteLine($"! SEMANTIC ERROR: Binary operator '{b.Op.Kind}' is not defined for types '{left.GetType()}' and '{right.GetType()}'");
+                Console.WriteLine($"! SEMANTIC ERROR: Binary operator '{SyntaxFacts.GetText(b.Op.SyntaxKind)}' is not defined for types '{left.GetType()}' and '{right.GetType()}'");
                 Console.ResetColor();
                 return null;
             }
