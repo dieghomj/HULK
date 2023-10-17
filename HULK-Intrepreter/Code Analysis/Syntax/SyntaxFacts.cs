@@ -132,6 +132,14 @@ namespace HULK.CodeAnalysis.Syntax
                     return "false";
                 case SyntaxKind.TrueKeyword:
                     return "true";
+                case SyntaxKind.GreaterEqualToken:
+                    return ">=";
+                case SyntaxKind.LessEqualToken:
+                    return "<=";
+                case SyntaxKind.LessToken:
+                    return "<";
+                case SyntaxKind.GreaterToken:
+                    return ">";
                 default:
                     return null;
             }

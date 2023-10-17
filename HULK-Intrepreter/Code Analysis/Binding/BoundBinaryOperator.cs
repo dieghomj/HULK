@@ -8,17 +8,17 @@ namespace HULK.CodeAnalysis.Binding
         : this(syntaxKind, kind, type, type, type) 
         {
         }
-        private BoundBinaryOperator(SyntaxKind syntaxKind, BoundBinaryOperatorKind kind, Type type, Type resultyType) 
-        : this(syntaxKind, kind, type, type, resultyType) 
+        private BoundBinaryOperator(SyntaxKind syntaxKind, BoundBinaryOperatorKind kind, Type type, Type resultType) 
+        : this(syntaxKind, kind, type, type, resultType) 
         {
         }
-        private BoundBinaryOperator(SyntaxKind syntaxKind, BoundBinaryOperatorKind kind, Type leftType, Type rightype, Type resultyType)
+        private BoundBinaryOperator(SyntaxKind syntaxKind, BoundBinaryOperatorKind kind, Type leftType, Type rightType, Type resultType)
         {
             SyntaxKind = syntaxKind;
             Kind = kind;
             LeftType = leftType;
-            RightType = rightype;
-            Type = resultyType;
+            RightType = rightType;
+            Type = resultType;
         }
 
 
@@ -39,10 +39,10 @@ namespace HULK.CodeAnalysis.Binding
             new BoundBinaryOperator(SyntaxKind.CircumflexToken, BoundBinaryOperatorKind.Exponentiation, typeof(double)),
             new BoundBinaryOperator(SyntaxKind.EqualEqualToken, BoundBinaryOperatorKind.Equals, typeof(double), typeof(bool)), 
             new BoundBinaryOperator(SyntaxKind.BangEqualToken, BoundBinaryOperatorKind.NotEquals, typeof(double), typeof(bool)),
-            new BoundBinaryOperator(SyntaxKind.EqualEqualToken, BoundBinaryOperatorKind.Greater, typeof(double), typeof(bool)), 
-            new BoundBinaryOperator(SyntaxKind.BangEqualToken, BoundBinaryOperatorKind.Less, typeof(double), typeof(bool)),
-            new BoundBinaryOperator(SyntaxKind.EqualEqualToken, BoundBinaryOperatorKind.GreaterEqual, typeof(double), typeof(bool)), 
-            new BoundBinaryOperator(SyntaxKind.BangEqualToken, BoundBinaryOperatorKind.LessEqual, typeof(double), typeof(bool)),
+            new BoundBinaryOperator(SyntaxKind.GreaterToken, BoundBinaryOperatorKind.Greater, typeof(double), typeof(bool)), 
+            new BoundBinaryOperator(SyntaxKind.LessToken, BoundBinaryOperatorKind.Less, typeof(double), typeof(bool)),
+            new BoundBinaryOperator(SyntaxKind.GreaterEqualToken, BoundBinaryOperatorKind.GreaterEqual, typeof(double), typeof(bool)), 
+            new BoundBinaryOperator(SyntaxKind.LessEqualToken, BoundBinaryOperatorKind.LessEqual, typeof(double), typeof(bool)),
 
             //MixedOperators
             new BoundBinaryOperator(SyntaxKind.AtToken, BoundBinaryOperatorKind.Concatenation, typeof(string), typeof(double), typeof(string)),       
