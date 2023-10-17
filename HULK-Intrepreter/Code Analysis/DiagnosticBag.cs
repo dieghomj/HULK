@@ -68,9 +68,9 @@ internal sealed class DiagnosticBag : IEnumerable<Diagnostic>
         Report(new TextSpan(startSpan.Start,endSpan.End-startSpan.Start),message);
     }
 
-    internal void ReportUndefinedFunction(TextSpan span, string functionName)
+    internal void ReportUndefinedFunction(TextSpan span, string functionName, int count)
     {
-        var message = $"! SEMANTIC ERROR: Function '{functionName}' doesn't exist";
+        var message = $"! SEMANTIC ERROR: Function '{functionName}' with {count} parameters doesn't exist";
         Report(span,message);
     }
 }

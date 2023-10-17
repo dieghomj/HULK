@@ -9,7 +9,8 @@ namespace HULK.CodeAnalysis.Binding
         AssignmentExpression,
         LetInExpression,
         IfElseExpression,
-        FunctionCallExpression
+        FunctionCallExpression,
+        FunctionDeclarationExpression
     }
 
 }

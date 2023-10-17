@@ -38,6 +38,7 @@ namespace HULK.CodeAnalysis.Syntax
         LetKeyword,
         IfKeyword,
         ElseKeyword,
+        FunctionKeyword,
 
         //Nodes
         CompilationUnit,
@@ -53,6 +54,6 @@ namespace HULK.CodeAnalysis.Syntax
         LetInExpression,
         IfElseExpression,
         FunctionCallExpression,
-        FunctionKeyword,
+        FunctionDeclarationExpression,
     }
 }

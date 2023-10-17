@@ -1,3 +1,5 @@
+using HULK.CodeAnalysis.Binding;
+
 namespace HULK.CodeAnalysis
 {
     public sealed class VariableSymbol
@@ -11,5 +13,6 @@ namespace HULK.CodeAnalysis
         public string Name { get; }
         public Type Type { get; }
     }
+
 }
 

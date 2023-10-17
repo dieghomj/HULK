@@ -79,23 +79,10 @@ namespace HULK.CodeAnalysis.Syntax
 
         private ExpressionSyntax ParseExpression()
         {
-            return ParseFunctionCallExpression();
-        }
-
-        private ExpressionSyntax ParseFunctionCallExpression()
-        {
-            if ( Current.Kind == SyntaxKind.IdentifierToken && Peek(1).Kind == SyntaxKind.OpenParenthesisToken)
-            {
-                var functionName = Match(SyntaxKind.IdentifierToken);
-                var openParenthesisToken = Match(SyntaxKind.OpenParenthesisToken);
-                var arguments = ParseArguments();
-                var closedParenthesisToken = Match(SyntaxKind.CloseParenthesisToken);
-
-                return new FunctionCallExpressionSyntax( functionName, openParenthesisToken, arguments, closedParenthesisToken);
-            }
+            if (Current.Kind == SyntaxKind.FunctionKeyword)
+                return ParseFunctionDeclarationExpression();
             else return ParseBinaryExpression();
         }
-
 
         private ExpressionSyntax ParseAssignmentExpression()
         {
@@ -151,7 +138,12 @@ namespace HULK.CodeAnalysis.Syntax
                     return ParseStringLiteral();
 
                 case SyntaxKind.IdentifierToken:
-                    return ParseNameExpression();
+                {
+                    if(Peek(1).Kind == SyntaxKind.OpenParenthesisToken)
+                        return ParseFunctionCallExpression();
+                    else 
+                        return ParseNameExpression();
+                }
                 case SyntaxKind.LetKeyword:
                     return ParseLetInExpression();
                 case SyntaxKind.IfKeyword:
@@ -162,6 +154,32 @@ namespace HULK.CodeAnalysis.Syntax
                     return ParseNumberLiteral();
                 }
         }
+
+        private ExpressionSyntax ParseFunctionCallExpression()
+        {
+            var identifierToken = Match(SyntaxKind.IdentifierToken);
+            var openParenthesisToken = Match(SyntaxKind.OpenParenthesisToken);
+            var arguments = ParseArguments();
+            var closedParenthesisToken = Match(SyntaxKind.CloseParenthesisToken);
+
+            return new FunctionCallExpressionSyntax(identifierToken, openParenthesisToken, arguments, closedParenthesisToken);
+        }
+
+        private ExpressionSyntax ParseFunctionDeclarationExpression()
+        {
+            var functionToken = Match(SyntaxKind.FunctionKeyword);
+            var functionName = Match(SyntaxKind.IdentifierToken);
+            var openParenthesisToken = Match(SyntaxKind.OpenParenthesisToken);
+            var parameters = ParseParameters();
+            var closedParenthesisToken = Match(SyntaxKind.CloseParenthesisToken);
+            var equalToken = Match(SyntaxKind.EqualsToken);
+            var greaterToken = Match(SyntaxKind.GreaterToken);
+            var body = ParseExpression();
+
+            return new FunctionDeclarationExpressionSyntax(functionToken, functionName, openParenthesisToken, parameters, closedParenthesisToken, equalToken, greaterToken, body);
+
+        }
+
 
         private ExpressionSyntax ParseIfElseExpression()
         {
@@ -218,6 +236,21 @@ namespace HULK.CodeAnalysis.Syntax
             }
 
             return arguments;
+        }
+
+        private List<SyntaxToken> ParseParameters()
+        {
+            var parameters = new List<SyntaxToken>();
+            while (Current.Kind != SyntaxKind.CloseParenthesisToken)
+            {
+                var parameter = Match(SyntaxKind.IdentifierToken);
+                parameters.Add(parameter);
+                if (Current.Kind == SyntaxKind.CommaToken)
+                    Match(SyntaxKind.CommaToken);
+                else 
+                    break;
+            }
+            return parameters;
         }
 
         private ExpressionSyntax ParseNumberLiteral()

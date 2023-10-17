@@ -6,12 +6,13 @@ namespace HULK.CodeAnalysis
     {
         private readonly BoundExpression root;
         private readonly Dictionary<VariableSymbol, object> _variables;
-        private readonly Dictionary<string, BoundFunctionDeclaration> _functions;
+        private readonly Dictionary<FunctionSymbol, object> _functions;
 
-        public Evaluator(BoundExpression root, Dictionary<VariableSymbol, object> variables)
+        public Evaluator(BoundExpression root, Dictionary<VariableSymbol, object> variables, Dictionary<FunctionSymbol, object> functions)
         {
             this.root = root;
             _variables = variables;
+            _functions = functions;
         }
 
         public object Evaluate()
@@ -41,11 +42,22 @@ namespace HULK.CodeAnalysis
                     return EvaluateIfElseExpression((BoundIfElseExpression)node);
                 case BoundNodeKind.FunctionCallExpression:
                     return EvaluateFunctionCallExpression((BoundFunctionCallExpression)node);
+                case BoundNodeKind.FunctionDeclarationExpression:
+                    return EvaluateFunctionDeclarationExpression((BoundFunctionDeclarationExpression)node);
                 default:
                     throw new Exception($"Unexpected node {node.Kind}");
             }
         }
 
+        private object EvaluateFunctionDeclarationExpression(BoundFunctionDeclarationExpression node)
+        {
+            foreach (var v in node.Parameters)
+            {
+                _variables.Remove(v);
+            }
+            var text = $"Function {node.FunctionName.Text} correctly declared";
+            return text;
+        }
 
         private object EvaluateWithVariables(BoundExpression node, Dictionary<VariableSymbol, object> variables)
         {
@@ -58,7 +70,7 @@ namespace HULK.CodeAnalysis
                 case BoundNodeKind.LetInExpression:
                     return EvaluateLetInExpression((BoundLetInExpression)node, variables);
                 default: 
-                    throw new Exception($"Unexpected node {node.Kind}");            
+                    return EvaluateExpression(node);            
             }
         }
         private object EvaluateFunctionCallExpression(BoundFunctionCallExpression node)
@@ -71,16 +83,27 @@ namespace HULK.CodeAnalysis
 
         private object EvaluateFunction(string functionName, List<object> argumentsValue)
         {
-            // var functionExpression = _functions[functionName];
-            // for ( int i = 0; i < functionExpression.Parameters.Count; i++)
-            // {
-            //     var v = functionExpression.Parameters[i];
-            //     _variables[v] = argumentsValue[i]; 
-            // }
-            // return EvaluateExpression(functionExpression.Body);
-        
-            throw new NotImplementedException();
+            var variableKeys = new List<VariableSymbol>();
+            var functionSymbol = _functions.Keys.FirstOrDefault(f => f.Name == functionName);
+            if(functionSymbol == null)
+                throw new Exception($"Unexpected function name {functionName}");
 
+            var functionBody = _functions[functionSymbol];
+
+            for ( int i = 0; i < functionSymbol.Parameters.Count; i++)
+            {
+                var v = functionSymbol.Parameters[i];
+                _variables[v] = argumentsValue[i];
+                variableKeys.Add(v);
+            }
+
+            var value = EvaluateExpression((BoundExpression)functionBody);
+
+            foreach (var v in variableKeys)
+                _variables.Remove(v);
+
+            return value;
+        
         }
 
         private object EvaluateIfElseExpression(BoundIfElseExpression node)

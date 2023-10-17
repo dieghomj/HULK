@@ -27,11 +27,4 @@ namespace HULK.CodeAnalysis.Syntax
             yield return CloseParenthesisToken;
         }
     }
-
-    // internal sealed class FunctionDeclarationExpressionSyntax : ExpressionSyntax
-    // {
-    //     public FunctionDeclarationExpressionSyntax(SyntaxToken identifierToken, List<SyntaxToken> parameters, )
-    //     {
-    //     }
-    // }
 }

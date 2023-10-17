@@ -7,9 +7,9 @@ namespace HULK.CodeAnalysis.Binding
 
         private DiagnosticBag _diagnostics = new DiagnosticBag();
         private Dictionary<VariableSymbol, object> _variables;
-        private Dictionary<string, ExpressionSyntax> _functions;
+        private Dictionary<FunctionSymbol, object> _functions;
 
-        public Binder(Dictionary<VariableSymbol, object> variables, Dictionary<string, ExpressionSyntax> functions)
+        public Binder(Dictionary<VariableSymbol, object> variables, Dictionary<FunctionSymbol, object> functions)
         {
             _variables = variables;
             _functions = functions;
@@ -38,25 +38,71 @@ namespace HULK.CodeAnalysis.Binding
                     return BindIfElseExpression((IfElseExpressionSyntax)syntax);
                 case SyntaxKind.FunctionCallExpression:
                     return BindFunctionCallExpression((FunctionCallExpressionSyntax)syntax);
+                case SyntaxKind.FunctionDeclarationExpression:
+                    return BindFunctionDeclarationExpression((FunctionDeclarationExpressionSyntax)syntax);
                     
                 default:
                     throw new Exception($"Unexpected syntax {syntax.Kind}");
             }
         }
+ 
+        private BoundExpression BindFunctionDeclarationExpression(FunctionDeclarationExpressionSyntax syntax)
+        {
+            // var parameters = new List<string>();
+            var variablesKeys = new List<VariableSymbol>();
+
+            foreach (var p in syntax.Parameters)
+            {
+                var variableHolder = new VariableSymbol(p.Text, typeof(void)); 
+                variablesKeys.Add(variableHolder);
+                _variables[variableHolder] = null;
+            }
+
+            // foreach (var p in syntax.Parameters)
+            //     parameters.Add(p.Text);
+
+            var existingFunction = _functions.Keys.FirstOrDefault(v => v.Name == syntax.FunctionName.Text);
+
+            if ( existingFunction != null )
+                _functions.Remove(existingFunction);
+            var functionHolder = new FunctionSymbol(syntax.FunctionName.Text, typeof(void), variablesKeys);
+
+            _functions[functionHolder] = null;
+            var boundFunctionBody = BindExpression(syntax.Expression);
+            _functions.Remove(functionHolder);
+
+            foreach (var v in variablesKeys)
+                _variables.Remove(v);
+
+            _functions[new FunctionSymbol(syntax.FunctionName.Text, typeof(void) ,variablesKeys)] = boundFunctionBody;
+            return new BoundFunctionDeclarationExpression(syntax.FunctionName, variablesKeys);
+        }
 
         private BoundExpression BindFunctionCallExpression(FunctionCallExpressionSyntax syntax)
         {
             var functionName = syntax.FunctionName.Text;
-            var function = _functions.Keys.FirstOrDefault(v => v == functionName);
-            if(function == null)
-            {
-                _diagnostics.ReportUndefinedFunction(syntax.FunctionName.TextSpan,functionName);
-                return new BoundLiteralExpression(0);
-            }
             var boundArguments = new List<BoundExpression>();
             foreach (var argument in syntax.Arguments)
                 boundArguments.Add(BindExpression(argument));
             
+            var function = _functions.Keys.FirstOrDefault(v => v.Name == functionName && v.Parameters.Count == boundArguments.Count);
+            
+            if(function == null)
+            {
+                _diagnostics.ReportUndefinedFunction(syntax.FunctionName.TextSpan,functionName,boundArguments.Count);
+                return new BoundLiteralExpression(0);
+            }
+
+            // var functionParameters = function.Parameters;
+
+            // for ( int i = 0; i < functionParameters.Count; i++)
+            // {
+            //     var v = functionParameters[i];
+            //     _variables[v] = null;
+            // }
+
+            // _functions[function] = BindExpression((ExpressionSyntax)_functions[function]);
+
             return new BoundFunctionCallExpression(functionName, boundArguments);
         }
 
@@ -101,7 +147,7 @@ namespace HULK.CodeAnalysis.Binding
         private BoundExpression BindNameExpression(NameExpressionSyntax syntax)
         {
             var name = syntax.IdentifierToken.Text;
-            var variable = _variables.Keys.FirstOrDefault(v => v.Name == name);
+            var variable = _variables.Keys.FirstOrDefault(v => v.Name == name );
 
             if(variable == null)
             {
@@ -116,7 +162,7 @@ namespace HULK.CodeAnalysis.Binding
         {
             var name = syntax.IdentifierToken.Text;
             var boundExpression = BindExpression(syntax.Expression);
-            var existingVariable = _variables.Keys.FirstOrDefault(v => v.Name == name);
+            var existingVariable = _variables.Keys.FirstOrDefault(v => (v.Name == name) && (v.Type != typeof(void)));
             if( existingVariable != null)
                 _variables.Remove(existingVariable);
 

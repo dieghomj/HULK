@@ -11,6 +11,7 @@ namespace HULK
         {
             bool showTree = false;
             var variables = new Dictionary<VariableSymbol,object>();
+            var functions = new Dictionary<FunctionSymbol, object>();
 
             while (true)
             {
@@ -32,7 +33,7 @@ namespace HULK
 //===================================================================================
                 var syntaxTree = SyntaxTree.Parse(line);
                 var compilation = new Compilation(syntaxTree);
-                var result = compilation.Evaluate(variables);
+                var result = compilation.Evaluate(variables, functions);
 
                 var diagnostics = result.Diagnostics;
 
