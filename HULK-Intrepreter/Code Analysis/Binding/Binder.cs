@@ -40,15 +40,39 @@ namespace HULK.CodeAnalysis.Binding
                     return BindFunctionCallExpression((FunctionCallExpressionSyntax)syntax);
                 case SyntaxKind.FunctionDeclarationExpression:
                     return BindFunctionDeclarationExpression((FunctionDeclarationExpressionSyntax)syntax);
+                case SyntaxKind.PredefinedFunctionExpression:
+                    return BindPredefinedFunction((PredefinedFunctionExpressionSyntax)syntax);
                     
                 default:
                     throw new Exception($"Unexpected syntax {syntax.Kind}");
             }
         }
 
+        private BoundExpression BindPredefinedFunction(PredefinedFunctionExpressionSyntax syntax)
+        {
+            var argumentsType = new List<Type>();
+            var arguments = new List<BoundExpression>();
+            foreach (var argument in syntax.Arguments)
+            {
+                arguments.Add(BindExpression(argument));
+                argumentsType.Add(arguments.Last().Type);
+            }   
+                
+            
+            var name = syntax.Function.Text;
+            var predefinedFunction = BoundPredefinedFunction.Bind(name, argumentsType.Count ,argumentsType.ToArray());
+            
+            if(predefinedFunction == null)
+            {
+                _diagnostics.ReportUndefinedFunction(syntax.Function.TextSpan,name,argumentsType.Count);
+                return arguments.Last();
+            }
+
+            return new BoundPredefinedFunctionExpression(syntax.Function, arguments, predefinedFunction.ResultType);
+        }
+
         private BoundExpression BindFunctionDeclarationExpression(FunctionDeclarationExpressionSyntax syntax)
         {
-            // var parameters = new List<string>();
             var variablesKeys = new List<VariableSymbol>();
 
             foreach (var p in syntax.Parameters)
@@ -57,9 +81,6 @@ namespace HULK.CodeAnalysis.Binding
                 variablesKeys.Add(variableHolder);
                 _variables[variableHolder] = null;
             }
-
-            // foreach (var p in syntax.Parameters)
-            //     parameters.Add(p.Text);
 
             var existingFunction = _functions.Keys.FirstOrDefault(v => v.Name == syntax.FunctionName.Text);
 
@@ -92,16 +113,6 @@ namespace HULK.CodeAnalysis.Binding
                 _diagnostics.ReportUndefinedFunction(syntax.FunctionName.TextSpan,functionName,boundArguments.Count);
                 return new BoundLiteralExpression(0);
             }
-
-            // var functionParameters = function.Parameters;
-
-            // for ( int i = 0; i < functionParameters.Count; i++)
-            // {
-            //     var v = functionParameters[i];
-            //     _variables[v] = null;
-            // }
-
-            // _functions[function] = BindExpression((ExpressionSyntax)_functions[function]);
 
             return new BoundFunctionCallExpression(functionName, boundArguments);
         }
@@ -191,8 +202,6 @@ namespace HULK.CodeAnalysis.Binding
             var boundLeft = BindExpression(syntax.Left);
             var boundRight = BindExpression(syntax.Right);
 
-            // if( boundLeft.Kind == BoundNodeKind.IfElseExpression || boundRight.Kind == BoundNodeKind.IfElseExpression)
-            //     return new BoundBinaryExpression(boundLeft, boundOperator, boundRight);
             var boundOperator = BoundBinaryOperator.Bind(syntax.OperatorToken.Kind, boundLeft.Type, boundRight.Type);
             if (boundOperator == null)
             {

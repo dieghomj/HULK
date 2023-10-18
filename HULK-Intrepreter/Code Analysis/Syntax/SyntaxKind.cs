@@ -55,5 +55,8 @@ namespace HULK.CodeAnalysis.Syntax
         IfElseExpression,
         FunctionCallExpression,
         FunctionDeclarationExpression,
+        PredefinedFunctionKeyword,
+        ConstantKeyword,
+        PredefinedFunctionExpression,
     }
 }

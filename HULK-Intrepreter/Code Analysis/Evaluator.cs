@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using HULK.CodeAnalysis.Binding;
 using HULK.CodeAnalysis.Syntax;
 
@@ -5,7 +6,7 @@ namespace HULK.CodeAnalysis
 {
     internal class Evaluator
     {   
-        private const int STACK_OVERFLOW_LIMIT = 1000;
+        private const int STACK_OVERFLOW_LIMIT = 700;
         private int recursionCount = 0;
         private readonly BoundExpression root;
         private readonly Dictionary<FunctionSymbol, object> _functions;
@@ -19,6 +20,7 @@ namespace HULK.CodeAnalysis
         public object Evaluate()
         {
             recursionCount = 0;
+            
             return EvaluateExpression(root,new Dictionary<VariableSymbol, object>());
         }
 
@@ -46,11 +48,49 @@ namespace HULK.CodeAnalysis
                     return EvaluateFunctionCallExpression((BoundFunctionCallExpression)node, new Dictionary<VariableSymbol,object>(variables));
                 case BoundNodeKind.FunctionDeclarationExpression:
                     return EvaluateFunctionDeclarationExpression((BoundFunctionDeclarationExpression)node, variables);
+                case BoundNodeKind.PredefinedFunction:
+                    return EvaluatePredefinedFunction((BoundPredefinedFunctionExpression)node, variables);
                 default:
                     throw new Exception($"Unexpected node {node.Kind}");
             }
         }
 
+        private object EvaluatePredefinedFunction(BoundPredefinedFunctionExpression node, Dictionary<VariableSymbol, object> variables)
+        {
+            var argumentsValue = new List<object>();
+            
+            foreach (var a in node.Arguments)
+                argumentsValue.Add(EvaluateExpression(a,variables));
+            
+            switch(node.Function.Text)
+            {
+                case "print":
+                    Console.WriteLine(argumentsValue[0]);
+                    return argumentsValue[0]; 
+                case "sqrt":
+                    return Math.Sqrt((double)argumentsValue[0]);
+                case "exp":
+                    return Math.Exp((double)argumentsValue[0]);
+                case "rand":
+                    Random rnd = new Random();
+                    return rnd.NextDouble();
+                case "sen":
+                    return Math.Sin((double)argumentsValue[0]);
+                case "cos":
+                    return Math.Cos((double)argumentsValue[0]);
+                case "tan":
+                    return Math.Tan((double)argumentsValue[0]);
+                case "cot":
+                    return Math.Cos((double)argumentsValue[0])/Math.Tan((double)argumentsValue[0]);
+                case "log":
+                    return Math.Log2((double)argumentsValue[0])/Math.Log2((double)argumentsValue[1]);
+                
+                default:
+                    throw new Exception($"Unexpected function name '{node.Function.Text}");
+            }
+                    
+        }
+        
         private object EvaluateFunctionDeclarationExpression(BoundFunctionDeclarationExpression node, Dictionary<VariableSymbol, object> variables)
         {
             var text = $"Function '{node.FunctionName.Text}' correctly declared";

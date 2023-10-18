@@ -72,6 +72,19 @@ namespace HULK.CodeAnalysis.Syntax
                     return SyntaxKind.ElseKeyword;
                 case "function":
                     return SyntaxKind.FunctionKeyword;
+                case "sqrt":
+                case "print":
+                case "rand":
+                case "exp":
+                case "sin":
+                case "cos":
+                case "tan":
+                case "cot":
+                case "log":
+                    return SyntaxKind.PredefinedFunctionKeyword;
+                case "PI":
+                case "E":
+                    return SyntaxKind.ConstantKeyword;
                 default:
                     return SyntaxKind.IdentifierToken;
             }

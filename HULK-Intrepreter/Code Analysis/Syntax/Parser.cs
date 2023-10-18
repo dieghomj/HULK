@@ -149,10 +149,37 @@ namespace HULK.CodeAnalysis.Syntax
                 case SyntaxKind.IfKeyword:
                     return ParseIfElseExpression();
 
+                case SyntaxKind.PredefinedFunctionKeyword:
+                    return ParsePredefinedFunction();
+                case SyntaxKind.ConstantKeyword:
+                    return ParseConstantKeyword();
+
                 default:
                 case SyntaxKind.NumberToken:
                     return ParseNumberLiteral();
                 }
+        }
+
+        private ExpressionSyntax ParseConstantKeyword()
+        {
+            var constant = Match(SyntaxKind.ConstantKeyword);
+            if(constant.Text == "PI")
+                return new LiteralExpressionSyntax(constant, Math.PI);        
+            else if(constant.Text == "E")
+                return new LiteralExpressionSyntax(constant, Math.E);        
+            else 
+            {
+                throw new Exception($"Undefined constant <{constant.Text}>");
+            }
+        }
+
+        private ExpressionSyntax ParsePredefinedFunction()
+        {
+            var function = Match(SyntaxKind.PredefinedFunctionKeyword);
+            var openParenthesisToken = Match(SyntaxKind.OpenParenthesisToken);
+            var argument = ParseArguments();
+            var closedParenthesisToken = Match(SyntaxKind.CloseParenthesisToken);
+            return new PredefinedFunctionExpressionSyntax(function, openParenthesisToken, argument, closedParenthesisToken);
         }
 
         private ExpressionSyntax ParseFunctionCallExpression()
