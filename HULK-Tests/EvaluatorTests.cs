@@ -61,13 +61,13 @@ namespace HULK_Tests.CodeAnalysis.Syntax
         [InlineData("if( (let a = 10 in a * 10)%2 == 0 )  1 else 2;",1.0)]
         [InlineData("let a = 1 in (if( (let a = 10 in a * 10)%2 == 0 ) 5 else 2) * a;",5.0)]
 
-
         public void SyntaxFactGetTextRoundTrips(string text, object expectedValue)
         {
             var expression = SyntaxTree.Parse(text);
             var compilation = new Compilation(expression);
             var variables = new Dictionary<VariableSymbol, object>();
-            var actualResult = compilation.Evaluate(variables);
+            var functions = new Dictionary<FunctionSymbol, object>();
+            var actualResult = compilation.Evaluate(variables,functions);
 
             Assert.Empty(actualResult.Diagnostics);
             Assert.Equal(expectedValue, actualResult.Value);

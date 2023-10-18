@@ -137,6 +137,24 @@ namespace HULK_Tests.CodeAnalysis.Syntax
             if (t1Kind == SyntaxKind.EqualsToken && t2Kind == SyntaxKind.EqualEqualToken)
                 return true;
 
+            if (t1Kind == SyntaxKind.GreaterToken && t2Kind == SyntaxKind.EqualsToken)
+                return true;
+                
+            if (t1Kind == SyntaxKind.LessToken && t2Kind == SyntaxKind.EqualsToken)
+                return true;
+
+            if (t1Kind == SyntaxKind.GreaterEqualToken && t2Kind == SyntaxKind.EqualEqualToken)
+                return true;
+                
+            if (t1Kind == SyntaxKind.LessEqualToken && t2Kind == SyntaxKind.EqualEqualToken)
+                return true;
+
+            if (t1Kind == SyntaxKind.GreaterToken && t2Kind == SyntaxKind.EqualEqualToken)
+                return true;
+                
+            if (t1Kind == SyntaxKind.LessToken && t2Kind == SyntaxKind.EqualEqualToken)
+                return true;
+
             /*TODO
             Add more cases*/
             return false;
