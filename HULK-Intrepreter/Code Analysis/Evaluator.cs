@@ -10,7 +10,7 @@ namespace HULK.CodeAnalysis
         private readonly BoundExpression root;
         private readonly Dictionary<FunctionSymbol, object> _functions;
 
-        public Evaluator(BoundExpression root, Dictionary<VariableSymbol, object> variables, Dictionary<FunctionSymbol, object> functions)
+        public Evaluator(BoundExpression root, Dictionary<FunctionSymbol, object> functions)
         {
             this.root = root;
             _functions = functions;

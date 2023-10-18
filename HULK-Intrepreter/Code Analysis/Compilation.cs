@@ -20,7 +20,7 @@ namespace HULK.CodeAnalysis
             if(diagnostics.Any())
                 return new EvaluationResult(diagnostics,null);
 
-            var evaluator = new Evaluator(boundExpression, variables, functions);
+            var evaluator = new Evaluator(boundExpression, functions);
             var value = evaluator.Evaluate();
             return new EvaluationResult(Array.Empty<Diagnostic>(), value);
         }
