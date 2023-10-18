@@ -81,9 +81,9 @@ namespace HULK.CodeAnalysis
                 case "tan":
                     return Math.Tan((double)argumentsValue[0]);
                 case "cot":
-                    return Math.Cos((double)argumentsValue[0])/Math.Tan((double)argumentsValue[0]);
+                    return Math.Cos((double)argumentsValue[0])/Math.Sin((double)argumentsValue[0]);
                 case "log":
-                    return Math.Log2((double)argumentsValue[0])/Math.Log2((double)argumentsValue[1]);
+                    return Math.Log2((double)argumentsValue[1])/Math.Log2((double)argumentsValue[0]);
                 
                 default:
                     throw new Exception($"Unexpected function name '{node.Function.Text}");
