@@ -220,20 +220,20 @@ namespace HULK.CodeAnalysis.Syntax
 
         private void ReadWhiteSpace()
         {
-            while (char.IsWhiteSpace(Current))
+            while (char.IsWhiteSpace(Current)) 
                 Next();
             _kind = SyntaxKind.WitheSpaceToken;
         }
 
         private void ReadNumberToken()
         {
-            while (char.IsDigit(Current))
+            while (char.IsDigit(Current) || (Current == '.' && LookAhead != '.') )
                 Next();
             var length = _position - _start;
             var text = _text.Substring(_start, length);
 
             if (!double.TryParse(text, out var value))
-                _diagnostics.ReportInvalidNumber(new TextSpan(_start, length), text, typeof(int));
+                _diagnostics.ReportInvalidNumber(new TextSpan(_start, length), text, typeof(double));
 
             _value = value;
             _kind = SyntaxKind.NumberToken;
