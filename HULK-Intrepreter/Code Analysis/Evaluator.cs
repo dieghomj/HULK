@@ -6,26 +6,23 @@ namespace HULK.CodeAnalysis
     internal class Evaluator
     {   
         private const int STACK_OVERFLOW_LIMIT = 1000;
-        private Dictionary<FunctionSymbol, int> _stacks = new Dictionary<FunctionSymbol, int>();
         private int recursionCount = 0;
         private readonly BoundExpression root;
-        private readonly Dictionary<VariableSymbol, object> _variables;
         private readonly Dictionary<FunctionSymbol, object> _functions;
 
         public Evaluator(BoundExpression root, Dictionary<VariableSymbol, object> variables, Dictionary<FunctionSymbol, object> functions)
         {
             this.root = root;
-            _variables = variables;
             _functions = functions;
         }
 
         public object Evaluate()
         {
             recursionCount = 0;
-            return EvaluateExpression(root);
+            return EvaluateExpression(root,new Dictionary<VariableSymbol, object>());
         }
 
-        private object EvaluateExpression(BoundExpression node)
+        private object EvaluateExpression(BoundExpression node , Dictionary<VariableSymbol,object> variables)
         {
             // 1 + (let a = 1 in a) + (let a = 2 in a)
 
@@ -36,23 +33,23 @@ namespace HULK.CodeAnalysis
             switch (node.Kind)
             {
                 case BoundNodeKind.LiteralExpression:
-                    return EvaluateLiteralExpression((BoundLiteralExpression)node);
+                    return EvaluateLiteralExpression((BoundLiteralExpression)node, variables);
                 case BoundNodeKind.VariableExpression:
-                    return EvaluateWithVariables(node,_variables);
+                    return EvaluateWithVariables(node,variables);
                 case BoundNodeKind.AssignmentExpression:
-                    return EvaluateWithVariables(node,_variables);
+                    return EvaluateWithVariables(node,variables);
                 case BoundNodeKind.UnaryExpression:
-                    return EvaluateUnaryExpression((BoundUnaryExpression)node);
+                    return EvaluateUnaryExpression((BoundUnaryExpression)node, variables);
                 case BoundNodeKind.BinaryExpression:
-                    return EvaluateBinaryExpression((BoundBinaryExpression)node);
+                    return EvaluateBinaryExpression((BoundBinaryExpression)node, variables);
                 case BoundNodeKind.LetInExpression:
-                    return EvaluateWithVariables(node, _variables);
+                    return EvaluateWithVariables(node, variables);
                 case BoundNodeKind.IfElseExpression:
-                    return EvaluateIfElseExpression((BoundIfElseExpression)node);
+                    return EvaluateIfElseExpression((BoundIfElseExpression)node, variables);
                 case BoundNodeKind.FunctionCallExpression:
-                    return EvaluateFunctionCallExpression((BoundFunctionCallExpression)node);
+                    return EvaluateFunctionCallExpression((BoundFunctionCallExpression)node, variables);
                 case BoundNodeKind.FunctionDeclarationExpression:
-                    return EvaluateFunctionDeclarationExpression((BoundFunctionDeclarationExpression)node);
+                    return EvaluateFunctionDeclarationExpression((BoundFunctionDeclarationExpression)node, variables);
                 default:
                     throw new Exception($"Unexpected node {node.Kind}");
             }
@@ -68,50 +65,50 @@ namespace HULK.CodeAnalysis
                 case BoundNodeKind.AssignmentExpression:
                     return EvaluateAssignmentExpression((BoundAssignmentExpression)node, variables);
                 case BoundNodeKind.LetInExpression:
-                    return EvaluateLetInExpression((BoundLetInExpression)node, variables);
+                    return EvaluateLetInExpression((BoundLetInExpression)node, new Dictionary<VariableSymbol,object>(variables));
                 default: 
-                    return EvaluateExpression(node);            
+                    return EvaluateExpression(node,variables);            
             }
         }
-        private object EvaluateFunctionDeclarationExpression(BoundFunctionDeclarationExpression node)
+        private object EvaluateFunctionDeclarationExpression(BoundFunctionDeclarationExpression node, Dictionary<VariableSymbol, object> variables)
         {
-            var text = $"Function {node.FunctionName.Text} correctly declared";
+            var text = $"Function '{node.FunctionName.Text}' correctly declared";
             return text;
         }
-        private object EvaluateFunctionCallExpression(BoundFunctionCallExpression node)
+        private object EvaluateFunctionCallExpression(BoundFunctionCallExpression node, Dictionary<VariableSymbol, object> variables)
         {
             var argumentsValue = new List<object>();
             foreach (var argument in node.Arguments)
-                argumentsValue.Add(EvaluateExpression(argument));
-            return EvaluateFunction(node.FunctionName , argumentsValue);
+                argumentsValue.Add(EvaluateExpression(argument,variables));
+            return EvaluateFunction(node.FunctionName , argumentsValue, variables);
         }
 
-        private object EvaluateFunction(string functionName, List<object> argumentsValue)
+        private object EvaluateFunction(string functionName, List<object> argumentsValue, Dictionary<VariableSymbol, object> variables)
         {
             var variableKeys = new List<VariableSymbol>();
             var functionSymbol = _functions.Keys.FirstOrDefault(f => f.Name == functionName);
             if(functionSymbol == null)
-                throw new Exception($"Unexpected function name {functionName}");
+                throw new Exception($"Unexpected function name '{functionName}'");
 
             var functionBody = _functions[functionSymbol];
 
             for ( int i = 0; i < functionSymbol.Parameters.Count; i++)
             {
                 var v = functionSymbol.Parameters[i];
-                _variables[v] = argumentsValue[i];
+                variables[v] = argumentsValue[i];
                 variableKeys.Add(v);
             }
 
-            return EvaluateExpression((BoundExpression)functionBody);
+            return EvaluateExpression((BoundExpression)functionBody,variables);
         }
 
-        private object EvaluateIfElseExpression(BoundIfElseExpression node)
+        private object EvaluateIfElseExpression(BoundIfElseExpression node, Dictionary<VariableSymbol, object> variables)
         {
-            var condition = EvaluateExpression(node.Condition);
+            var condition = EvaluateExpression(node.Condition,variables);
             if((bool)condition)
-                return EvaluateExpression(node.TrueExpression);
+                return EvaluateExpression(node.TrueExpression,variables);
             else 
-                return EvaluateExpression(node.FalseExpression);
+                return EvaluateExpression(node.FalseExpression,variables);
         }
 
         private object EvaluateLetInExpression(BoundLetInExpression node, Dictionary<VariableSymbol, object> variables)
@@ -120,31 +117,39 @@ namespace HULK.CodeAnalysis
             foreach (var a in node.Assignments)
                 EvaluateWithVariables(a, variables);    
 
-            var value =  EvaluateExpression(node.Expression);
+            var value =  EvaluateExpression(node.Expression, variables);
 
             return value;
         }
 
-        private static object EvaluateLiteralExpression(BoundLiteralExpression n)
+        private static object EvaluateLiteralExpression(BoundLiteralExpression n, Dictionary<VariableSymbol, object> variables)
         {
             return n.Value;
         }
 
         private object EvaluateVariableExpression(BoundVariableExpression v, Dictionary<VariableSymbol, object> variables)
         {
-            return variables[v.Variable];
+            if(variables.ContainsKey(v.Variable))
+                return variables[v.Variable];
+            else
+            {
+                return variables[variables.Keys.FirstOrDefault(k => k.Name == v.Variable.Name)];
+            }
         }
 
         private object EvaluateAssignmentExpression(BoundAssignmentExpression a, Dictionary<VariableSymbol, object> variables)
         {
-            var value = EvaluateExpression(a.Expression);
-            variables[a.Variable] = value;
+            var value = EvaluateExpression(a.Expression, variables);
+            if(variables.ContainsKey(a.Variable))
+                variables[a.Variable] = value;
+            else 
+                variables.Add(a.Variable, value);
             return value;
         }
 
-        private object EvaluateUnaryExpression(BoundUnaryExpression u)
+        private object EvaluateUnaryExpression(BoundUnaryExpression u, Dictionary<VariableSymbol, object> variables)
         {
-            var operand = EvaluateExpression(u.Operand);
+            var operand = EvaluateExpression(u.Operand, variables);
 
                 //TODO FIX this
             var bind = BoundUnaryOperator.Bind(u.Op.SyntaxKind, operand.GetType());
@@ -169,10 +174,10 @@ namespace HULK.CodeAnalysis
             }
         }
 
-        private object EvaluateBinaryExpression(BoundBinaryExpression b)
+        private object EvaluateBinaryExpression(BoundBinaryExpression b, Dictionary<VariableSymbol, object> variables)
         {
-            var left = EvaluateExpression(b.Left);
-            var right = EvaluateExpression(b.Right);
+            var left = EvaluateExpression(b.Left, variables);
+            var right = EvaluateExpression(b.Right, variables);
 
                 //TODO FIX this
             var bind = BoundBinaryOperator.Bind(b.Op.SyntaxKind, left.GetType(), right.GetType());

@@ -45,7 +45,7 @@ namespace HULK.CodeAnalysis.Binding
                     throw new Exception($"Unexpected syntax {syntax.Kind}");
             }
         }
- 
+
         private BoundExpression BindFunctionDeclarationExpression(FunctionDeclarationExpressionSyntax syntax)
         {
             // var parameters = new List<string>();
