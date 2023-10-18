@@ -31,17 +31,17 @@ namespace HULK.CodeAnalysis
                 case BoundNodeKind.LiteralExpression:
                     return EvaluateLiteralExpression((BoundLiteralExpression)node, variables);
                 case BoundNodeKind.VariableExpression:
-                    return EvaluateWithVariables(node,variables);
+                    return EvaluateVariableExpression((BoundVariableExpression)node, variables);
                 case BoundNodeKind.AssignmentExpression:
-                    return EvaluateWithVariables(node,variables);
+                    return EvaluateAssignmentExpression((BoundAssignmentExpression)node, variables);
                 case BoundNodeKind.UnaryExpression:
                     return EvaluateUnaryExpression((BoundUnaryExpression)node, variables);
                 case BoundNodeKind.BinaryExpression:
                     return EvaluateBinaryExpression((BoundBinaryExpression)node, variables);
-                case BoundNodeKind.LetInExpression:
-                    return EvaluateWithVariables(node, variables);
                 case BoundNodeKind.IfElseExpression:
                     return EvaluateIfElseExpression((BoundIfElseExpression)node, variables);
+                case BoundNodeKind.LetInExpression:
+                    return EvaluateLetInExpression((BoundLetInExpression)node, new Dictionary<VariableSymbol,object>(variables));
                 case BoundNodeKind.FunctionCallExpression:
                     return EvaluateFunctionCallExpression((BoundFunctionCallExpression)node, new Dictionary<VariableSymbol,object>(variables));
                 case BoundNodeKind.FunctionDeclarationExpression:
@@ -51,21 +51,6 @@ namespace HULK.CodeAnalysis
             }
         }
 
-
-        private object EvaluateWithVariables(BoundExpression node, Dictionary<VariableSymbol, object> variables)
-        {
-            switch (node.Kind)
-            {
-                case BoundNodeKind.VariableExpression:
-                    return EvaluateVariableExpression((BoundVariableExpression)node, variables);
-                case BoundNodeKind.AssignmentExpression:
-                    return EvaluateAssignmentExpression((BoundAssignmentExpression)node, variables);
-                case BoundNodeKind.LetInExpression:
-                    return EvaluateLetInExpression((BoundLetInExpression)node, new Dictionary<VariableSymbol,object>(variables));
-                default: 
-                    return EvaluateExpression(node,variables);            
-            }
-        }
         private object EvaluateFunctionDeclarationExpression(BoundFunctionDeclarationExpression node, Dictionary<VariableSymbol, object> variables)
         {
             var text = $"Function '{node.FunctionName.Text}' correctly declared";
@@ -111,7 +96,7 @@ namespace HULK.CodeAnalysis
         {
 
             foreach (var a in node.Assignments)
-                EvaluateWithVariables(a, variables);    
+                EvaluateExpression(a, variables);    
 
             var value =  EvaluateExpression(node.Expression, variables);
 
