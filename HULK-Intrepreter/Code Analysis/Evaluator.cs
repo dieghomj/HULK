@@ -26,10 +26,6 @@ namespace HULK.CodeAnalysis
         {
             // 1 + (let a = 1 in a) + (let a = 2 in a)
 
-            recursionCount++;
-            if(recursionCount >= STACK_OVERFLOW_LIMIT)
-                return "Stack Overflow";
-
             switch (node.Kind)
             {
                 case BoundNodeKind.LiteralExpression:
@@ -47,7 +43,7 @@ namespace HULK.CodeAnalysis
                 case BoundNodeKind.IfElseExpression:
                     return EvaluateIfElseExpression((BoundIfElseExpression)node, variables);
                 case BoundNodeKind.FunctionCallExpression:
-                    return EvaluateFunctionCallExpression((BoundFunctionCallExpression)node, variables);
+                    return EvaluateFunctionCallExpression((BoundFunctionCallExpression)node, new Dictionary<VariableSymbol,object>(variables));
                 case BoundNodeKind.FunctionDeclarationExpression:
                     return EvaluateFunctionDeclarationExpression((BoundFunctionDeclarationExpression)node, variables);
                 default:
