@@ -51,20 +51,20 @@ internal sealed class DiagnosticBag : IEnumerable<Diagnostic>
 
     internal void ReportUndefinedName(TextSpan span, string name)
     {
-        var message = $"! SEMANTIC ERROR: Variable {name} doesn't exist";
+        var message = $"! SEMANTIC ERROR: Variable '{name}' doesn't exist";
         Report(span,message);
     }
 
     internal void ReportExpectedCharacter(TextSpan span, char expectedCharacter)
     {
-        var message = $"! LEXICAL ERROR: Expected {expectedCharacter}";
+        var message = $"! LEXICAL ERROR: Expected '{expectedCharacter}'";
         Report(span,message);
     }
 
     internal void ReportUnexpectedType(TextSpan startSpan, TextSpan endSpan, Type actualType, Type expectedType)
     {
 
-        var message = $"! SEMANTIC ERROR: Expected type {expectedType} but got {actualType}";
+        var message = $"! SEMANTIC ERROR: Expected type '{expectedType.Name}' but got '{actualType.Name}'";
         Report(new TextSpan(startSpan.Start,endSpan.End-startSpan.Start),message);
     }
 
