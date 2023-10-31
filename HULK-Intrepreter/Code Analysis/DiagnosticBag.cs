@@ -20,7 +20,7 @@ internal sealed class DiagnosticBag : IEnumerable<Diagnostic>
 
     public void ReportInvalidNumber(TextSpan span, string text, Type type)
     {
-        var message = $"! LEXICAL ERROR: The number {text} isn't valid {type}";
+        var message = $"! LEXICAL ERROR: The number {text} isn't valid {type.Name}";
         Report(span,message);
     }
 
@@ -39,13 +39,13 @@ internal sealed class DiagnosticBag : IEnumerable<Diagnostic>
 
     public void ReportUndefinedUnaryOperator(TextSpan span, string operatorText, Type operandType)
     {
-        var message = $"! SEMANTIC ERROR: Unary operator '{operatorText}' is not defined for type {operandType}";
+        var message = $"! SEMANTIC ERROR: Unary operator '{operatorText}' is not defined for type {operandType.Name}";
         Report(span,message);
     }
 
     public void ReportUndefinedBinaryOperator(TextSpan span, string operatorText, Type leftType, Type rightType)
     {
-        var message = $"! SEMANTIC ERROR: Binary operator '{operatorText}' is not defined for types '{leftType}' and '{rightType}'";
+        var message = $"! SEMANTIC ERROR: Binary operator '{operatorText}' is not defined for types '{leftType.Name}' and '{rightType.Name}'";
         Report(span,message);
     }
 
