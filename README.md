@@ -4,10 +4,7 @@ Havana University Language Kompiler
 
 ## Correr el proyecto
 
-Para correr el proyecto abra una terminal en la carpeta donde se encuentra el proyecto y escriba la siguiente línea:
-    `sh run.sh`
-Si no funciona:
-    `dotnet run -v q --project HULK`
+Para correr el proyecto abra una terminal en la carpeta donde se encuentra el proyecto y escriba la siguiente línea: `sh run.sh` o `dotnet run -v q --project HULK`.
 
 ## Funcionalidades
 
