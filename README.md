@@ -11,11 +11,30 @@ Para correr el proyecto abra una terminal en la carpeta donde se encuentra el pr
 
 ### Keywords implementadas
 
-`if ( <bool expression> ) <expression> else <expression>`: Si la condicion es verdadera realiza la primera expresion en caso contrario la segunda.
+#### Condiciones
 
-`let <assignment expression>, ... in <expression>`: El tipo de expresion luego de la keyword `let` debe ser de asignacion, toda variable que haya sido asignado podra ser usada luego de `in`.
+```cs
+if ( <bool expression> ) <expression> else <expression>
+```
 
-`function <function name>( <variable name>, ... ) <expression>`: Declara una funcion, luego para llamarla solo se debe usar la siguiente syntax `<function name>( <expression>, ... )` incluyendo dentro de los parentesis la misma cantidad de expresiones que variables en la declaracion. 
+Si la condicion es verdadera realiza la primera expresion en caso contrario la segunda.
+
+
+#### Declaracion de variables
+
+```cs
+let <assignment expression>, ... in <expression>
+```
+
+El tipo de expresion luego de la keyword `let` debe ser de asignacion, toda variable que haya sido asignado podra ser usada luego de `in`.
+
+#### Funciones
+
+```cs
+function <function name>( <variable name>, ... ) <expression>
+```
+
+Declara una funcion, luego para llamarla solo se debe usar la siguiente syntax `<function name>( <expression>, ... )` incluyendo dentro de los parentesis la misma cantidad de expresiones que variables en la declaracion. 
 
 #### Funciones predefinidas
 
