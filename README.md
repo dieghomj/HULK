@@ -30,7 +30,7 @@ El tipo de expresion luego de la keyword `let` debe ser de asignacion, toda vari
 
 #### Funciones
 
-```cs
+```python
 function <function name>( <variable name>, ... ) <expression>
 ```
 
