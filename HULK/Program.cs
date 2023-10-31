@@ -19,18 +19,21 @@ namespace HULK
                 var line = Console.ReadLine();
                 if (string.IsNullOrWhiteSpace(line)) return;
 
-                if ( line == "#showtree"){
-                    
-                    showTree = !showTree;
-                    Console.WriteLine(showTree ? "Showing parse trees." : "Not showing parse trees.");
-                    continue;
-                
+                switch (line)
+                {
+                    case "#showtree":
+                        showTree = !showTree;
+                        Console.WriteLine(showTree ? "Showing parse trees." : "Not showing parse trees.");
+                        continue;
+                    case "#clear":
+                        Console.Clear();
+                        continue;
                 }
 
 
-//===================================================================================
-//                          Parse
-//===================================================================================
+                //===================================================================================
+                //                          Parse
+                //===================================================================================
                 var syntaxTree = SyntaxTree.Parse(line);
                 var compilation = new Compilation(syntaxTree);
                 var result = compilation.Evaluate(variables, functions);
@@ -42,7 +45,6 @@ namespace HULK
 //===================================================================================
                 if (showTree){
             
-                    var color = Console.ForegroundColor;
                     Console.ForegroundColor = ConsoleColor.DarkGray;
                     TreePrint(syntaxTree.Root);
                     Console.ResetColor();
