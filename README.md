@@ -4,12 +4,10 @@ Havana University Language Kompiler
 
 ## Correr el proyecto
 
-Para correr el proyecto abra una terminal en la carpeta donde se encuentra el proyecto y escriba la siguiente linea:
+Para correr el proyecto abra una terminal en la carpeta donde se encuentra el proyecto y escriba la siguiente línea:
     `dotnet run -v q --project HULK`
 
 ## Funcionalidades
-
-
 
 ### Keywords implementadas
 
@@ -19,7 +17,7 @@ Para correr el proyecto abra una terminal en la carpeta donde se encuentra el pr
 if ( <bool expression> ) <expression> else <expression>
 ```
 
-Si la condicion es verdadera realiza la primera expresion en caso contrario la segunda.
+Si la condición es verdadera realiza la primera expresión en caso contrario la segunda.
 
 
 #### Declaracion de variables
@@ -28,7 +26,7 @@ Si la condicion es verdadera realiza la primera expresion en caso contrario la s
 let <assignment expression>, ... in <expression>
 ```
 
-El tipo de expresion luego de la keyword `let` debe ser de asignacion, toda variable que haya sido asignado podra ser usada luego de `in`.
+El tipo de expresion luego de la keyword `let` debe ser de asignación, toda variable que haya sido asignado podrá ser usada luego de `in`.
 
 #### Funciones
 
@@ -36,27 +34,27 @@ El tipo de expresion luego de la keyword `let` debe ser de asignacion, toda vari
 function <function name>( <variable name>, ... ) => <expression>
 ```
 
-Declara una funcion, luego para llamarla solo se debe usar la siguiente syntax `<function name>( <expression>, ... )` incluyendo dentro de los parentesis la misma cantidad de expresiones que variables en la declaracion. 
+Declara una función, luego para llamarla solo se debe usar la siguiente syntax `<function name>( <expression>, ... )` incluyendo dentro de los paréntesis la misma cantidad de expresiones que variables en la declaración.
 
 #### Funciones predefinidas
 
-`print( <expression> )`: Imprime en consola y devuelve la misma expresion.
+`print( <expression> )`: Imprime en consola y devuelve la misma expresión.
 
-`rnd()`: Devuevle un un numero aleatorio entre 0 y 1 (inclusivo).
+`rnd()`: Devuelve un un número aleatorio entre 0 y 1 (inclusivo).
 
-`sqrt( <expression> )`: Devuelve la raiz cuadrada de la expresion.
+`sqrt( <expression> )`: Devuelve la raiz cuadrada de la expresión.
 
-`exp( <expression> )`: Devuelve $e$ elevado a la expresion,
+`exp( <expression> )`: Devuelve $e$ elevado a la expresión,
 
-`sen( <expression> )`: Devuelve el seno de la expresion.
+`sen( <expression> )`: Devuelve el seno de la expresión.
 
-`cos( <expression> )`: Devuelve el coseno de la expresion.
+`cos( <expression> )`: Devuelve el coseno de la expresión.
 
-`tan( <expression> )`: Devuelve la tangente de la expresion.
+`tan( <expression> )`: Devuelve la tangente de la expresión.
 
-`cot( <expression> )`: Devuelve la cotangente de la expresion.
+`cot( <expression> )`: Devuelve la cotangente de la expresión.
 
-`log( <expression>, <expression>)`: Devuelve el logaritmo de la segunda expresion en base de la primera.
+`log( <expression>, <expression>)`: Devuelve el logaritmo de la segunda expresión en base de la primera.
 
 ### Comandos externos a **HULK**
 
