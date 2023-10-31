@@ -9,11 +9,13 @@ Para correr el proyecto abra una terminal en la carpeta donde se encuentra el pr
 
 ## Funcionalidades
 
+
+
 ### Keywords implementadas
 
 #### Condiciones
 
-```cs
+```js
 if ( <bool expression> ) <expression> else <expression>
 ```
 
@@ -22,7 +24,7 @@ Si la condicion es verdadera realiza la primera expresion en caso contrario la s
 
 #### Declaracion de variables
 
-```cs
+```js
 let <assignment expression>, ... in <expression>
 ```
 
@@ -30,8 +32,8 @@ El tipo de expresion luego de la keyword `let` debe ser de asignacion, toda vari
 
 #### Funciones
 
-```python
-function <function name>( <variable name>, ... ) <expression>
+```js
+function <function name>( <variable name>, ... ) => <expression>
 ```
 
 Declara una funcion, luego para llamarla solo se debe usar la siguiente syntax `<function name>( <expression>, ... )` incluyendo dentro de los parentesis la misma cantidad de expresiones que variables en la declaracion. 
