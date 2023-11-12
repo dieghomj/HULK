@@ -12,7 +12,24 @@ namespace HULK
             bool showTree = false;
             var variables = new Dictionary<VariableSymbol,object>();
             var functions = new Dictionary<FunctionSymbol, object>();
-
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("=================================================================================================");
+            Console.WriteLine("                           ##    ##    ##       ##   ##         ##     ##");
+            Console.WriteLine("                           ##    ##    ##       ##   ##         ##   ##");
+            Console.WriteLine("                           ##    ##    ##       ##   ##         ## ##");
+            Console.WriteLine("                           ########    ##       ##   ##         ###");
+            Console.WriteLine("                           ##    ##    ##       ##   ##         ## ##");
+            Console.WriteLine("                           ##    ##     ##     ##    ##         ##   ##");
+            Console.WriteLine("                           ##    ##       #####      ########   ##     ##");
+            Console.WriteLine("=================================================================================================");
+            
+            PrintHULK();    
+            Console.WriteLine();
+            Console.WriteLine("=================================================================================================");
+            Console.WriteLine("                               HAVANA UNIVERSITY LANGUAGE KOMPILER                               ");
+            Console.WriteLine("=================================================================================================");
+            Console.ResetColor();
             while (true)
             {
                 Console.Write("> ");
@@ -94,6 +111,49 @@ namespace HULK
 //===================================================================================
             }
         }
+
+        static void PrintHULK()
+        {
+            Console.WriteLine("                                          .                                     ");
+            Console.WriteLine("                                          .:****++==--::. :-:                    ");
+            Console.WriteLine("                            .:-==++****************************+=:.              ");
+            Console.WriteLine("                           .--=+*************************************=-          ");
+            Console.WriteLine("                       .-+**********************************************+:       ");
+            Console.WriteLine("                       .-=*************************************************=::   ");
+            Console.WriteLine("                     :+*******************************************************-=:");
+            Console.WriteLine("                      =********************************************************+:");
+            Console.WriteLine("                      :*********************************************************.");
+            Console.WriteLine("                      .********************************************************* ");
+            Console.WriteLine("                       ************+***********+******************************** ");
+            Console.WriteLine("                       +****-=**+:  +*******+-.  .=+-********+-.-******-:******+ ");
+            Console.WriteLine("                       =****: ..     =***+-.         :****+:      =**-   .*****+ ");
+            Console.WriteLine("                        ****: .:      --.             :=:                 -****= ");
+            Console.WriteLine("                         +*+ .+                                         =  ***=  ");
+            Console.WriteLine("                         :*: .*-.                                       == -*=   ");
+            Console.WriteLine("                         .*:   :+**=:                               :==++.  *-   ");
+            Console.WriteLine("                          +.     -****=.                        .-+***-.    +-   ");
+            Console.WriteLine("                                  :**.**=.       :    :       .+*=***.      :.   ");
+            Console.WriteLine("                                   +**=+**=.    -:    +     .=**=-**=            ");
+            Console.WriteLine("                                    .:::::-=+++=: .::..=+==+++==++=:             ");
+            Console.WriteLine("                            :                    :...::                          ");
+            Console.WriteLine("                            :=:.            :.-:       .:..               ::     ");
+            Console.WriteLine("                              .:-===-.   :-. =.          =.:::    ...:----:      ");
+            Console.WriteLine("                                 ::.  .-:    :===:    -=-=.   -:   :=:           ");
+            Console.WriteLine("                                -.  --.         :=++++=:        :-:  .-          ");
+            Console.WriteLine("                               =  .-                              .-.  -.        ");
+            Console.WriteLine("                               . -..--:-+-::.                .:-::: :-  -        ");
+            Console.WriteLine("                                :.--    =   .--...:=-....=-:. :-   +=.- :        ");
+            Console.WriteLine("                                :.***+=:=-               -    -  :+**-:.         ");
+            Console.WriteLine("                                ..+*-:-****+++*=---------+-==+***=-+*=:          ");
+            Console.WriteLine("                                  ==  .**************************:.-*:.          ");
+            Console.WriteLine("                                  =+..:**************************...+-           ");
+            Console.WriteLine("                                  +- .:+************************+   ==           ");
+            Console.WriteLine("                                  ==-.  :**********************-..:.==           ");
+            Console.WriteLine("                                   ++   :.:+*****************==.   =*:           ");
+            Console.WriteLine("                                    -= :=   - ..+::=-::+:::=   =  :*:            ");
+            Console.WriteLine("                                      :+*.  -   =..-:  =   :   *+-:              ");
+            Console.WriteLine("                                         ..:::::.......::..-:.:.                 ");        
+            }                          
 
         static void TreePrint(SyntaxNode node, string indent = "")
         {
