@@ -15,16 +15,18 @@ namespace HULK
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("=================================================================================================");
-            Console.WriteLine("                           ##    ##    ##       ##   ##         ##     ##");
-            Console.WriteLine("                           ##    ##    ##       ##   ##         ##   ##");
-            Console.WriteLine("                           ##    ##    ##       ##   ##         ## ##");
-            Console.WriteLine("                           ########    ##       ##   ##         ###");
-            Console.WriteLine("                           ##    ##    ##       ##   ##         ## ##");
-            Console.WriteLine("                           ##    ##     ##     ##    ##         ##   ##");
-            Console.WriteLine("                           ##    ##       #####      ########   ##     ##");
+            Console.WriteLine("                           ##    ##    ##       ##   ##         ##     ##                        ");
+            Console.WriteLine("                           ##    ##    ##       ##   ##         ##   ##                          ");
+            Console.WriteLine("                           ##    ##    ##       ##   ##         ## ##                            ");
+            Console.WriteLine("                           ########    ##       ##   ##         ###                              ");
+            Console.WriteLine("                           ##    ##    ##       ##   ##         ## ##                            ");
+            Console.WriteLine("                           ##    ##     ##     ##    ##         ##   ##                          ");
+            Console.WriteLine("                           ##    ##       #####      ########   ##     ##                        ");
             Console.WriteLine("=================================================================================================");
             
-            PrintHULK();    
+            Console.ForegroundColor = ConsoleColor.DarkGreen;
+            PrintHULK();
+
             Console.WriteLine();
             Console.WriteLine("=================================================================================================");
             Console.WriteLine("                               HAVANA UNIVERSITY LANGUAGE KOMPILER                               ");
@@ -32,7 +34,10 @@ namespace HULK
             Console.ResetColor();
             while (true)
             {
-                Console.Write("> ");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write(">>> ");
+                Console.ResetColor();
+
                 var line = Console.ReadLine();
                 if (string.IsNullOrWhiteSpace(line)) return;
 
