@@ -76,7 +76,7 @@ namespace HULK.CodeAnalysis.Syntax
                 case "print":
                 case "rand":
                 case "exp":
-                case "sin":
+                case "sen":
                 case "cos":
                 case "tan":
                 case "cot":
