@@ -96,14 +96,14 @@ Ejemplos:
 Mal uso de un operador binario:
 
 ```js
-1 + true;
+>>>1 + true;
 ! SEMANTIC ERROR: Binary operator '+' is not defined for types 'Double' and 'Bool'
 ```
 
 Uso de una variable sin declarar:
 
 ```js
-1 + X;
+>>>1 + X;
 ! SEMANTIC ERROR: Variable 'X' doesn't exist
 ```
 
