@@ -39,12 +39,8 @@ namespace HULK.CodeAnalysis.Syntax
 
         public SyntaxToken Lex()
         {
-            //This method tokenizes the give string
-            //At the moment reads:
-            //<numbers>
-            //<*-+/>
-            //<whitespaces>
-            //TODO : implement next tokens: <if - else keywords> <methods/functions> <let - in keywords> < math basic functions> <name variables>
+            //This method tokenizes the given string
+            //TODO :
 
             _start = _position;
             _kind = SyntaxKind.BadToken;
