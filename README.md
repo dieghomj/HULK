@@ -55,6 +55,58 @@ Declara una función, luego para llamarla solo se debe usar la siguiente syntax 
 
 `log( <expression>, <expression>)`: Devuelve el logaritmo de la segunda expresión en base de la primera.
 
+### Errores
+
+Existen tres tipos de errores:
+
+#### LEXICAL ERROR
+
+Este tipo de errores son encontrados en el analisis lexico. Ejemplos:
+
+Un cararcter desconocido:
+
+```js
+>>>1 + ■;
+! LEXICAL ERROR: Bad character input: '■'
+```
+
+No terminar la expresion con `;`: 
+```js
+>>>1+2
+! LEXICAL ERROR: Expected ';'
+```
+
+#### SYNTAX ERROR
+
+Este tipo de errores son encontrados en el analisis sintactico.
+Ejemplos:
+
+Uso de una sintaxis incorrecta:
+
+```js
+>>>let a in 2;
+! SYNTAX ERROR: Unexpected token <IdentifierToken> expected <EqualsToken>
+```
+
+#### SEMANTIC ERROR
+
+Este tipo de errores son encontrados en el analisis semantico
+Ejemplos:
+
+Mal uso de un operador binario:
+
+```js
+1 + true;
+! SEMANTIC ERROR: Binary operator '+' is not defined for types 'Double' and 'Bool'
+```
+
+Uso de una variable sin declarar:
+
+```js
+1 + X;
+! SEMANTIC ERROR: Variable 'X' doesn't exist
+```
+
 ### Comandos externos a **HULK**
 
 `#showtree`:    Muestra el AST.
